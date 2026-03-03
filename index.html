@@ -6,45 +6,232 @@
     <title>С 8 марта — именные открытки</title>
     <link rel="stylesheet" href="themes/base.css">
     <link rel="stylesheet" href="themes/themes.css">
+    <style>
+        /* Дополнительные стили для казино */
+        .wheel-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 50%;
+            background: var(--wheel-bg, #ffe7ef);
+            box-shadow: var(--wheel-shadow, 0 20px 30px rgba(255, 150, 180, 0.3));
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        
+        /* Обводка колеса адаптирована под темы */
+        .wheel-canvas {
+            border: 3px solid var(--wheel-sector-stroke, #ffffff);
+        }
+        
+        .bet-input {
+            background: var(--input-bg);
+            color: var(--input-color);
+            border: 3px solid var(--input-border);
+            box-shadow: 0 2px 10px var(--input-shadow, rgba(0,0,0,0.1));
+        }
+        
+        .max-bet-btn {
+            background: var(--modal-btn-bg);
+            border: 3px solid var(--modal-btn-border);
+            color: var(--modal-btn-color);
+            box-shadow: 0 5px 0 var(--modal-btn-shadow, #e6b7c8), 0 8px 12px var(--modal-btn-active-shadow, rgba(255, 150, 180, 0.2));
+        }
+        
+        .spin-btn {
+            background: var(--wheel-spin-btn-bg);
+            border: 3px solid var(--wheel-spin-btn-border);
+            color: var(--wheel-spin-btn-color);
+            box-shadow: var(--wheel-spin-btn-shadow);
+        }
+        
+        .last-result {
+            background: var(--game-section-bg);
+            color: var(--counter-color);
+            border: 2px solid var(--game-section-border);
+        }
+        
+        .balance-panel {
+            background: var(--counter-bg);
+            border: 2px solid var(--counter-border);
+            color: var(--counter-color);
+        }
+        
+        .balance-amount {
+            background: var(--card-bg);
+            border: 1px solid var(--counter-border);
+            color: var(--counter-color);
+        }
+        
+        .wheel-container .pointer {
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 30px solid var(--wheel-pointer-color);
+            filter: drop-shadow(0 8px 6px var(--wheel-pointer-shadow));
+        }
+        
+        /* Модалка для результатов казино */
+        .casino-result-modal .modal-message {
+            font-size: 2rem;
+            margin: 20px 0;
+        }
+        
+        .casino-result-modal .modal-flower {
+            font-size: 4rem;
+            animation: bounce 0.5s ease;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .win-multiplier {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--special-name-color);
+            text-shadow: 0 0 10px var(--special-name-shadow);
+            margin: 10px 0;
+        }
+        
+        /* Модалка выбора темы */
+        .theme-selector-modal .custom-modal-content {
+            max-width: 500px;
+        }
+        
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .theme-card {
+            background: var(--card-bg);
+            border: 3px solid var(--card-border);
+            border-radius: 30px 10px 30px 10px;
+            padding: 20px 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .theme-card.active {
+            border-color: var(--special-block-border);
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--special-name-shadow);
+        }
+        
+        .theme-card:active {
+            transform: scale(0.98);
+        }
+        
+        .theme-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        .theme-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--name-color);
+        }
+        
+        .theme-card.default .theme-preview { background: linear-gradient(145deg, #ffb7c5, #ff8da1); }
+        .theme-card.white .theme-preview { background: linear-gradient(145deg, #ffffff, #f0f0f0); }
+        .theme-card.lilac .theme-preview { background: linear-gradient(145deg, #ce93d8, #b06bc0); }
+        .theme-card.bright-pink .theme-preview { background: linear-gradient(145deg, #ff8aa1, #ff527b); }
+        .theme-card.gold .theme-preview { background: linear-gradient(145deg, #ffd700, #ffb347); }
+        .theme-card.cosmic .theme-preview { background: linear-gradient(145deg, #4a3a7a, #2a1a4a); }
+        .theme-card.dark-blue .theme-preview { background: linear-gradient(145deg, #1a3a7a, #0a1a4a); }
+        
+        .theme-card.hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body id="mainBody" class="theme-default">
 
     <div class="petals-front" id="petalsFront"></div>
+    <div class="bg-gradient-fix"></div>
 
-    <div class="main-card">
-        <div class="settings-button" id="settingsButton" aria-label="Настройки">⚙️</div>
+    <!-- Основной контент (главная страница) -->
+    <div class="main-content" id="mainContent">
+        <div class="main-card">
+            <div class="settings-button" id="settingsButton" aria-label="Настройки">⚙️</div>
 
-        <h1 class="main-title" id="titleClick" role="button" tabindex="0">С 8 марта</h1>
-        <div class="soft-sub">самые прекрасные и нежные</div>
+            <h1 class="main-title" id="titleClick" role="button" tabindex="0">С 8 марта</h1>
+            <div class="soft-sub">самые прекрасные и нежные</div>
 
-        <div class="names-wishes" id="namesContainer"></div>
+            <div class="names-wishes" id="namesContainer"></div>
 
-        <div class="game-section">
-            <div class="game-title">
-                <span>🌸</span> Собери букет <span>🌷</span>
-            </div>
-            <div class="clicker-area">
-                <div class="counter-display" id="flowerCounter">🌺 0</div>
-                <div class="progress-container">
-                    <div class="progress-bar" id="progressBar"></div>
+            <div class="game-section">
+                <div class="game-title">
+                    <span>🌸</span> Собери букет <span>🌷</span>
                 </div>
-                <div class="big-flower" id="clickFlower" role="button" tabindex="0" aria-label="Кликни цветок">🌸</div>
-                <div class="game-hint" id="gameHint">Кликай на цветок ✨</div>
+                <div class="clicker-area">
+                    <div class="counter-display" id="flowerCounter">🌺 0</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                    <div class="big-flower" id="clickFlower" role="button" tabindex="0" aria-label="Кликни цветок">🌸</div>
+                    <div class="game-hint" id="gameHint">Кликай на цветок ✨</div>
+                </div>
+            </div>
+
+            <!-- Кнопки мини-игр -->
+            <div class="games-row">
+                <button class="game-btn daisy-btn" id="daisyGameBtn">
+                    <span>🌼</span> Ромашка (10🌸)
+                </button>
+                <button class="game-btn wheel-btn" id="wheelGameBtn">
+                    <span>🎰</span> Букет (10🌸)
+                </button>
+            </div>
+
+            <div class="signature" id="easterEgg" role="button" tabindex="0">
+                <span>💗</span> by Aizen with love <span>💗</span>
             </div>
         </div>
+    </div>
 
-        <!-- Кнопки мини-игр -->
-        <div class="games-row">
-            <button class="game-btn daisy-btn" id="daisyGameBtn">
-                <span>🌼</span> Ромашка (10🌸)
-            </button>
-            <button class="game-btn wheel-btn" id="wheelGameBtn">
-                <span>🎰</span> Букет (10🌸)
-            </button>
-        </div>
+    <!-- Контент казино (изначально скрыт) -->
+    <div class="casino-content" id="casinoContent" style="display: none;">
+        <div class="main-card casino-card">
+            <h1 class="main-title">🎰 Казино</h1>
+            <div class="soft-sub">крути и умножай цветы</div>
 
-        <div class="signature" id="easterEgg" role="button" tabindex="0">
-            <span>💗</span> by Aizen with love <span>💗</span>
+            <!-- баланс -->
+            <div class="balance-panel">
+                <span class="balance-emoji">🌸</span>
+                <span class="balance-amount" id="casinoBalanceDisplay">0</span>
+                <span>цветов</span>
+            </div>
+
+            <!-- ставка -->
+            <div class="bet-area">
+                <input type="number" id="betInput" class="bet-input" value="10" min="1" step="1" inputmode="numeric">
+                <button class="max-bet-btn" id="maxBetBtn">Макс</button>
+            </div>
+
+            <!-- барабан -->
+            <div class="wheel-container">
+                <div class="pointer"></div>
+                <canvas id="wheelCanvas" class="wheel-canvas" width="600" height="600"></canvas>
+            </div>
+
+            <!-- кнопка крутить -->
+            <button class="spin-btn" id="spinButton">🎰 Крутить</button>
+
+            <!-- последний результат -->
+            <div class="last-result" id="lastResult">Сделай ставку</div>
         </div>
     </div>
 
@@ -54,7 +241,7 @@
             <div class="modal-flower" id="modalNameIcon">🌸</div>
             <div class="modal-message" id="modalNameTitle">Анна</div>
             <div id="modalWishes" class="wish-lines"></div>
-            <div class="modal-btn" onclick="closeNameModal()">Спасибо ✨</div>
+            <div class="modal-btn close-btn" onclick="closeNameModal()">Спасибо ✨</div>
         </div>
     </div>
 
@@ -62,7 +249,7 @@
         <div class="custom-modal-content">
             <div class="modal-flower">🌸🌷🌸</div>
             <div class="modal-message" id="victoryMessage">🎉 100 цветов!<br>Ты невероятна! 🎉</div>
-            <div class="modal-btn" onclick="closeVictoryModal()">Спасибо ✨</div>
+            <div class="modal-btn close-btn" onclick="closeVictoryModal()">Спасибо ✨</div>
         </div>
     </div>
 
@@ -70,7 +257,7 @@
         <div class="custom-modal-content">
             <div class="modal-flower">💐✨💐</div>
             <div class="modal-message" id="complimentMessage">Ты супер!</div>
-            <div class="modal-btn" onclick="closeComplimentModal()">🌸 Спасибо</div>
+            <div class="modal-btn close-btn" onclick="closeComplimentModal()">🌸 Спасибо</div>
         </div>
     </div>
 
@@ -79,11 +266,12 @@
             <div class="modal-flower">🎁💗🎁</div>
             <div class="modal-message">Надеюсь, вы меня не ненавидите)<br>Вот вам подарок - введите промокод<br><span style="font-size:1.3rem;">(Подсказка: это мемное число)</span></div>
             <input type="text" id="promoCodeInput" class="promo-input" placeholder="Например 1488" maxlength="10" inputmode="numeric">
-            <div class="modal-btn" id="applyPromoCodeBtn">Активировать</div>
-            <div class="modal-btn" onclick="closePromoModal()" style="margin-top:8px; background:#ffe2ed;">Закрыть</div>
+            <div class="modal-btn promo-apply-btn" id="applyPromoCodeBtn">Активировать</div>
+            <div class="modal-btn close-btn" onclick="closePromoModal()" style="margin-top:8px;">Закрыть</div>
         </div>
     </div>
 
+    <!-- НОВАЯ МОДАЛКА: Настройки (упрощенная) -->
     <div id="settingsModal" class="custom-modal settings-modal">
         <div class="custom-modal-content">
             <div class="modal-flower">⚙️🌸⚙️</div>
@@ -99,33 +287,7 @@
             
             <div class="settings-section">
                 <div class="section-title">🎨 Оформление</div>
-                <div class="theme-buttons" id="themeButtons">
-                    <button class="theme-btn theme-default-btn active" onclick="setTheme('default')">
-                        <span class="theme-color default-color"></span>
-                        Розовая
-                    </button>
-                    <button class="theme-btn theme-white-btn" onclick="setTheme('white')">
-                        <span class="theme-color white-color"></span>
-                        Белая
-                    </button>
-                    <button class="theme-btn theme-lilac-btn" onclick="setTheme('lilac')">
-                        <span class="theme-color lilac-color"></span>
-                        Сиреневая
-                    </button>
-                    <button class="theme-btn theme-bright-pink-btn" onclick="setTheme('bright-pink')">
-                        <span class="theme-color bright-pink-color"></span>
-                        Ярко-розовая
-                    </button>
-                    <!-- Секретные темы (будут показаны после активации) -->
-                    <button class="theme-btn theme-cosmic-btn hidden" onclick="setTheme('cosmic')">
-                        <span class="theme-color cosmic-color"></span>
-                        Космическая 🌟
-                    </button>
-                    <button class="theme-btn theme-dark-blue-btn hidden" onclick="setTheme('dark-blue')">
-                        <span class="theme-color dark-blue-color"></span>
-                        Темно-синяя 🌌
-                    </button>
-                </div>
+                <button class="modal-btn" id="openThemeSelectorBtn" style="width:100%; margin-bottom:10px;">Выбрать тему</button>
             </div>
             
             <div class="about-dev">
@@ -137,7 +299,61 @@
                 <div>🧪 Тестер: Ярослава</div>
                 <div class="thanks">🙏 Спасибо Егору Е. и Денису С.</div>
             </div>
-            <div class="modal-btn" onclick="closeSettingsModal()">Закрыть</div>
+            <div class="modal-btn close-btn" onclick="closeSettingsModal()">Закрыть</div>
+        </div>
+    </div>
+
+    <!-- НОВАЯ МОДАЛКА: Выбор темы -->
+    <div id="themeSelectorModal" class="custom-modal theme-selector-modal">
+        <div class="custom-modal-content">
+            <div class="modal-flower">🎨🌸🎨</div>
+            <div class="modal-message">Выберите тему</div>
+            
+            <div class="theme-grid" id="themeGrid">
+                <!-- Тема по умолчанию -->
+                <div class="theme-card default active" onclick="selectTheme('default')">
+                    <div class="theme-preview"></div>
+                    <span class="theme-name">Розовая</span>
+                </div>
+                
+                <!-- Белая тема -->
+                <div class="theme-card white" onclick="selectTheme('white')">
+                    <div class="theme-preview"></div>
+                    <span class="theme-name">Белая</span>
+                </div>
+                
+                <!-- Сиреневая тема -->
+                <div class="theme-card lilac" onclick="selectTheme('lilac')">
+                    <div class="theme-preview"></div>
+                    <span class="theme-name">Сиреневая</span>
+                </div>
+                
+                <!-- Ярко-розовая тема -->
+                <div class="theme-card bright-pink" onclick="selectTheme('bright-pink')">
+                    <div class="theme-preview"></div>
+                    <span class="theme-name">Ярко-розовая</span>
+                </div>
+                
+                <!-- Золотая тема (скрыта по умолчанию) -->
+                <div class="theme-card gold hidden" onclick="selectTheme('gold')">
+                    <div class="theme-preview"></div>
+                    <span class="theme-name">Золотая</span>
+                </div>
+                
+                <!-- Космическая тема (скрыта по умолчанию) -->
+                <div class="theme-card cosmic hidden" onclick="selectTheme('cosmic')">
+                    <div class="theme-preview"></div>
+                    <span class="theme-name">Космическая</span>
+                </div>
+                
+                <!-- Темно-синяя тема (скрыта по умолчанию) -->
+                <div class="theme-card dark-blue hidden" onclick="selectTheme('dark-blue')">
+                    <div class="theme-preview"></div>
+                    <span class="theme-name">Темно-синяя</span>
+                </div>
+            </div>
+            
+            <div class="modal-btn close-btn" onclick="closeThemeSelectorModal()">Закрыть</div>
         </div>
     </div>
 
@@ -163,73 +379,124 @@
                 </div>
             </div>
             
-            <div class="modal-btn daisy-close-btn" onclick="closeDaisyModal()">Закрыть</div>
+            <div class="modal-btn close-btn" onclick="closeDaisyModal()">Закрыть</div>
         </div>
     </div>
 
-    <!-- Модалка рулетки "Букет" -->
+    <!-- Модалка для рулетки "Букет" -->
     <div id="wheelModal" class="custom-modal wheel-modal">
         <div class="custom-modal-content wheel-content">
             <div class="modal-flower">🎰🌸🎰</div>
-            <div class="modal-message">Крути рулетку</div>
+            <div class="modal-message">Колесо удачи</div>
             
             <div class="wheel-game-container">
                 <div class="wheel-wrapper">
                     <div class="pointer"></div>
-                    <canvas id="wheelCanvas" width="600" height="600"></canvas>
+                    <canvas id="wheelCanvasGame" class="wheel-canvas" width="600" height="600"></canvas>
                 </div>
-                <button class="wheel-spin-btn" id="wheelSpinBtn">🎰 Крутить (10🌸)</button>
+                
+                <button class="wheel-spin-btn" id="wheelSpinBtn">🌀 Крутить</button>
             </div>
             
-            <div class="modal-btn wheel-close-btn" onclick="closeWheelModal()">Закрыть</div>
+            <div class="modal-btn close-btn" onclick="closeWheelModal()">Закрыть</div>
         </div>
     </div>
 
-    <!-- Модалка для сообщений (замена alert) -->
+    <!-- Модалка для результатов казино -->
+    <div id="casinoResultModal" class="custom-modal casino-result-modal">
+        <div class="custom-modal-content">
+            <div class="modal-flower" id="casinoResultIcon">🎰</div>
+            <div class="modal-message" id="casinoResultMessage">Результат</div>
+            <div class="win-multiplier" id="casinoResultMultiplier"></div>
+            <div class="modal-btn close-btn" onclick="closeCasinoResultModal()">Продолжить ✨</div>
+        </div>
+    </div>
+
+    <!-- Модалка для сообщений -->
     <div id="messageModal" class="custom-modal message-modal">
         <div class="custom-modal-content message-content">
             <div class="modal-flower" id="messageModalIcon">💬</div>
             <div class="modal-message" id="messageModalText">Сообщение</div>
-            <div class="modal-btn" onclick="closeMessageModal()">OK</div>
+            <div class="modal-btn close-btn" onclick="closeMessageModal()">OK</div>
         </div>
     </div>
 
-    <!-- Контейнер для цветопада (поверх всего) -->
+    <!-- Модалка "Ты лудоман!" -->
+    <div id="gamblerModal" class="custom-modal gambler-modal">
+        <div class="custom-modal-content">
+            <div class="modal-flower">🎰💰🎰</div>
+            <div class="modal-message">Ты лудоман! 🎲</div>
+            <div class="gambler-text">Поздравляю! Ты накопил 1000 цветов<br>и открыл казино и золотую тему!</div>
+            <div class="gambler-reward">+ Золотая тема</div>
+            <div class="modal-btn close-btn" onclick="closeGamblerModal()">Ура! 🎉</div>
+        </div>
+    </div>
+
+    <!-- Контейнер для цветопада -->
     <div class="rain-container" id="rainContainer"></div>
 
+    <!-- Нижняя навигация (изначально скрыта) -->
+    <div class="bottom-nav" id="bottomNav" style="display: none;">
+        <button class="nav-btn main-nav-btn active" id="navMainBtn">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-text">Главная</span>
+        </button>
+        <button class="nav-btn casino-nav-btn" id="navCasinoBtn">
+            <span class="nav-icon">🎰</span>
+            <span class="nav-text">Казино</span>
+        </button>
+    </div>
+
     <script>
-        // ==================== ДАННЫЕ ИМЁН ====================
+        // ==================== ИНИЦИАЛИЗАЦИЯ ПЕРЕМЕННЫХ ====================
+        let flowerCount = 0;
+        const MAX_FLOWERS = 50000000;
+        let casinoUnlocked = false;
+        let goldThemeUnlocked = false;
+        let cosmicThemeUnlocked = false;
+        let darkBlueThemeUnlocked = false;
+        let currentTheme = 'default';
+        let currentPetalCount = 25;
+        let usedPromoCodes = new Set();
+        
+        // ==================== НОРМАЛЬНЫЕ ПОЗДРАВЛЕНИЯ ====================
         const namesData = [
             { icon: '🌸', name: 'Ольга Николаевна', special: true, wishes: [
-                'С 8 марта, Ольга Николаевна!',
-                'Вы — самый лучший классный руководитель!',
-                'Здоровья, счастья и вдохновения!',
-                'Пусть ученики радуют каждый день! 💐'
+                'Дорогая Ольга Николаевна!',
+                'От всей души поздравляем Вас с Международным женским днём!',
+                'Спасибо за Вашу заботу, мудрость и терпение.',
+                'Желаем Вам крепкого здоровья, счастья и благополучия!',
+                'Пусть каждый день дарит только радостные эмоции и приятные сюрпризы! 💐'
             ]},
             { icon: '🌷', name: 'Лукерья', wishes: [
-                'Нежная Лукерья, с праздником!',
-                'Пусть весна подарит много цветов!',
-                'Счастья, любви и красоты! ✨'
+                'Милая Лукерья!',
+                'С 8 марта! Ты наполняешь этот мир своей красотой и добротой.',
+                'Желаю тебе весеннего настроения, цветущей красоты и исполнения самых заветных желаний.',
+                'Пусть каждый день будет наполнен улыбками и приятными моментами! ✨'
             ]},
             { icon: '🌸', name: 'Карина', wishes: [
-                'Карина, сияй ярко!',
-                'Пусть мечты сбываются!',
-                'С 8 марта! 🌸'
+                'Карина, с праздником весны!',
+                'Ты удивительная, талантливая и прекрасная!',
+                'Желаю тебе оставаться такой же яркой и неповторимой.',
+                'Пусть сбудутся все твои мечты, а удача всегда будет рядом! 🌸'
             ]},
             { icon: '🌼', name: 'Юля', wishes: [
-                'Юленька, с праздником!',
-                'Оставайся такой же чудесной!',
-                'Море улыбок и цветов! 🌺'
+                'Юленька, с 8 марта!',
+                'Твоя улыбка согревает сердца, а доброта вдохновляет.',
+                'Желаю тебе огромного счастья, взаимной любви и успехов во всех начинаниях.',
+                'Пусть жизнь дарит только приятные сюрпризы! 🌺'
             ]},
             { icon: '🌺', name: 'Маша', wishes: [
-                'Машенька, с 8 марта!',
-                'Нежности, тепла и вдохновения!',
-                'Будь счастлива каждый день! 💖'
+                'Машенька, поздравляю с Международным женским днём!',
+                'Ты невероятная, сильная и в то же время нежная.',
+                'Желаю тебе гармонии, душевного тепла и исполнения желаний.',
+                'Пусть каждый день приносит радость и вдохновение! 💖'
             ]},
             { icon: '✨', name: 'Настя', wishes: [
-                'Настюша, с праздником весны!',
-                'Пусть всё задуманное сбудется!',
-                'Сияй и радуй мир! 🌷'
+                'Настюша, с праздником!',
+                'Ты как лучик солнца — даришь тепло и свет окружающим.',
+                'Желаю тебе море цветов, океан любви и безграничного счастья.',
+                'Пусть весна в твоей душе никогда не заканчивается! 🌷'
             ]}
         ];
 
@@ -273,9 +540,9 @@
         function closeNameModal() { nameModal.style.display = 'none'; }
 
         // ==================== ЛЕПЕСТКИ ====================
-        let currentPetalCount = 25;
         function createPetals(count) {
             const frontContainer = document.getElementById('petalsFront');
+            if (!frontContainer) return;
             frontContainer.innerHTML = '';
             const petalsList = ['🌸', '🌷', '🌼', '🌺'];
             for (let i = 0; i < count; i++) {
@@ -292,6 +559,7 @@
 
         function flowerRain(count = 25, specificEmoji = null) {
             const rainContainer = document.getElementById('rainContainer');
+            if (!rainContainer) return;
             const flowersList = ['🌸', '🌷', '🌼', '🌺', '🌹', '🌻', '🌿'];
             
             for (let i = 0; i < count; i++) {
@@ -319,7 +587,6 @@
         }
 
         // ==================== ИГРА СЧЕТЧИК ====================
-        let flowerCount = 0;
         const counterElement = document.getElementById('flowerCounter');
         const clickFlower = document.getElementById('clickFlower');
         const gameHint = document.getElementById('gameHint');
@@ -328,22 +595,70 @@
         const victoryMessage = document.getElementById('victoryMessage');
 
         function updateDisplay() {
-            counterElement.textContent = `🌺 ${flowerCount}`;
-            const progress = (flowerCount % 100) / 100 * 100;
-            progressBar.style.width = progress + '%';
-            const nextTarget = (Math.floor(flowerCount / 100) + 1) * 100;
-            const toGo = nextTarget - flowerCount;
-            gameHint.textContent = flowerCount > 0 ? `До ${nextTarget} цветов: ${toGo} ✨` : `Кликай на цветок!`;
+            if (counterElement) counterElement.textContent = `🌺 ${flowerCount.toLocaleString()}`;
+            if (progressBar) {
+                const progress = (flowerCount % 100) / 100 * 100;
+                progressBar.style.width = progress + '%';
+            }
+            if (gameHint) {
+                const nextTarget = (Math.floor(flowerCount / 100) + 1) * 100;
+                const toGo = nextTarget - flowerCount;
+                gameHint.textContent = flowerCount > 0 ? `До ${nextTarget.toLocaleString()} цветов: ${toGo} ✨` : `Кликай на цветок!`;
+            }
+            
+            const casinoBalance = document.getElementById('casinoBalanceDisplay');
+            if (casinoBalance) casinoBalance.textContent = flowerCount.toLocaleString();
+        }
+
+        function addFlowers(amount) {
+            const oldCount = flowerCount;
+            const newAmount = flowerCount + amount;
+            if (newAmount > MAX_FLOWERS) {
+                flowerCount = MAX_FLOWERS;
+                showMessage(`Достигнут максимум! ${MAX_FLOWERS.toLocaleString()} цветов 🌸`, '🏆');
+            } else {
+                flowerCount = newAmount;
+            }
+            updateDisplay();
+            saveToStorage();
+            
+            if (oldCount < 1000 && flowerCount >= 1000 && !casinoUnlocked) {
+                unlockCasinoAndGoldTheme();
+            }
+        }
+
+        function unlockCasinoAndGoldTheme() {
+            casinoUnlocked = true;
+            goldThemeUnlocked = true;
+            
+            const bottomNav = document.getElementById('bottomNav');
+            if (bottomNav) bottomNav.style.display = 'flex';
+            
+            const mainContent = document.querySelector('.main-content');
+            const casinoContent = document.querySelector('.casino-content');
+            if (mainContent) mainContent.style.paddingBottom = '80px';
+            if (casinoContent) casinoContent.style.paddingBottom = '80px';
+            
+            const gamblerModal = document.getElementById('gamblerModal');
+            if (gamblerModal) gamblerModal.style.display = 'flex';
+            
+            // Показываем золотую тему в сетке
+            const goldCard = document.querySelector('.theme-card.gold');
+            if (goldCard) goldCard.classList.remove('hidden');
+            
+            setTheme('gold');
+            saveToStorage();
+            flowerRain(50, '👑');
         }
 
         const compliments = [
-            "Ты сегодня ослепительна! ✨",
-            "У тебя потрясающая улыбка! 😊",
-            "Ты — весеннее вдохновение! 🌼",
-            "С тобой тепло, как в мае! ☀️",
-            "Твоя энергия заряжает! ⚡",
-            "Ты чудо! 💖",
-            "Нежность и красота — это ты! 🌸"
+            "Твоя улыбка освещает этот день! ✨",
+            "Ты прекрасна, как весенний рассвет! 🌸",
+            "Твоя доброта согревает сердца! 💖",
+            "Ты — воплощение нежности и красоты! 🌷",
+            "С тобой мир становится ярче! 🌺",
+            "Ты вдохновляешь на великие дела! ⭐",
+            "Твоя энергия заряжает позитивом! 🌼"
         ];
         
         const complimentModal = document.getElementById('complimentModal');
@@ -352,55 +667,78 @@
         function check50() {
             if (flowerCount > 0 && flowerCount % 50 === 0) {
                 const randomIndex = Math.floor(Math.random() * compliments.length);
-                complimentMessage.textContent = compliments[randomIndex];
-                complimentModal.style.display = 'flex';
+                if (complimentMessage) complimentMessage.textContent = compliments[randomIndex];
+                if (complimentModal) complimentModal.style.display = 'flex';
             }
         }
 
-        function closeComplimentModal() { complimentModal.style.display = 'none'; }
+        function closeComplimentModal() { 
+            if (complimentModal) complimentModal.style.display = 'none'; 
+        }
 
         function checkVictory() {
             if (flowerCount % 100 === 0 && flowerCount > 0) {
-                victoryMessage.innerHTML = `🎉 ${flowerCount} цветов!<br>Ты невероятна! 🎉`;
-                victoryModal.style.display = 'flex';
+                if (victoryMessage) victoryMessage.innerHTML = `🎉 ${flowerCount.toLocaleString()} цветов!<br>Ты невероятна! 🎉`;
+                if (victoryModal) victoryModal.style.display = 'flex';
                 flowerRain(25);
             }
         }
 
-        clickFlower.addEventListener('click', function(e) {
-            e.preventDefault();
-            flowerCount++;
-            updateDisplay();
-            this.style.transform = 'scale(0.92)';
-            setTimeout(() => this.style.transform = 'scale(1)', 100);
-            checkVictory();
-            check50();
-        });
+        if (clickFlower) {
+            clickFlower.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (flowerCount < MAX_FLOWERS) {
+                    flowerCount++;
+                    updateDisplay();
+                    saveToStorage();
+                }
+                this.style.transform = 'scale(0.92)';
+                setTimeout(() => this.style.transform = 'scale(1)', 100);
+                checkVictory();
+                check50();
+                
+                if (flowerCount >= 1000 && !casinoUnlocked) {
+                    unlockCasinoAndGoldTheme();
+                }
+            });
 
-        clickFlower.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            this.style.transform = 'scale(0.92)';
-        });
+            clickFlower.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                this.style.transform = 'scale(0.92)';
+            });
 
-        clickFlower.addEventListener('touchend', function(e) {
-            e.preventDefault();
-            this.style.transform = 'scale(1)';
-            flowerCount++;
-            updateDisplay();
-            checkVictory();
-            check50();
-        });
+            clickFlower.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                this.style.transform = 'scale(1)';
+                if (flowerCount < MAX_FLOWERS) {
+                    flowerCount++;
+                    updateDisplay();
+                    saveToStorage();
+                }
+                checkVictory();
+                check50();
+                
+                if (flowerCount >= 1000 && !casinoUnlocked) {
+                    unlockCasinoAndGoldTheme();
+                }
+            });
+        }
 
-        document.getElementById('titleClick').addEventListener('click', function() {
-            flowerRain(30);
-        });
+        const titleClick = document.getElementById('titleClick');
+        if (titleClick) {
+            titleClick.addEventListener('click', function() {
+                flowerRain(30);
+            });
 
-        document.getElementById('titleClick').addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            flowerRain(30);
-        });
+            titleClick.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                flowerRain(30);
+            });
+        }
 
-        function closeVictoryModal() { victoryModal.style.display = 'none'; }
+        function closeVictoryModal() { 
+            if (victoryModal) victoryModal.style.display = 'none'; 
+        }
 
         // ==================== МОДАЛКА ДЛЯ СООБЩЕНИЙ ====================
         const messageModal = document.getElementById('messageModal');
@@ -408,152 +746,289 @@
         const messageModalIcon = document.getElementById('messageModalIcon');
 
         function showMessage(message, icon = '💬') {
-            messageModalText.textContent = message;
-            messageModalIcon.textContent = icon;
-            messageModal.style.display = 'flex';
+            if (messageModalText) messageModalText.textContent = message;
+            if (messageModalIcon) messageModalIcon.textContent = icon;
+            if (messageModal) messageModal.style.display = 'flex';
         }
 
         function closeMessageModal() {
-            messageModal.style.display = 'none';
+            if (messageModal) messageModal.style.display = 'none';
+        }
+
+        // ==================== LOCALSTORAGE ====================
+        const STORAGE_KEY = 'march8_data';
+        
+        function loadFromStorage() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    
+                    if (data.flowerCount !== undefined) {
+                        flowerCount = Math.min(data.flowerCount, MAX_FLOWERS);
+                    }
+                    
+                    if (data.usedPromoCodes) {
+                        usedPromoCodes = new Set(data.usedPromoCodes);
+                    }
+                    
+                    if (data.unlockedThemes) {
+                        if (data.unlockedThemes.includes('gold')) {
+                            goldThemeUnlocked = true;
+                            const goldCard = document.querySelector('.theme-card.gold');
+                            if (goldCard) goldCard.classList.remove('hidden');
+                        }
+                        if (data.unlockedThemes.includes('cosmic')) {
+                            cosmicThemeUnlocked = true;
+                            const cosmicCard = document.querySelector('.theme-card.cosmic');
+                            if (cosmicCard) cosmicCard.classList.remove('hidden');
+                        }
+                        if (data.unlockedThemes.includes('dark-blue')) {
+                            darkBlueThemeUnlocked = true;
+                            const darkCard = document.querySelector('.theme-card.dark-blue');
+                            if (darkCard) darkCard.classList.remove('hidden');
+                        }
+                    }
+                    
+                    if (data.casinoUnlocked) {
+                        casinoUnlocked = data.casinoUnlocked;
+                        if (casinoUnlocked) {
+                            const bottomNav = document.getElementById('bottomNav');
+                            if (bottomNav) bottomNav.style.display = 'flex';
+                            const mainContent = document.querySelector('.main-content');
+                            const casinoContent = document.querySelector('.casino-content');
+                            if (mainContent) mainContent.style.paddingBottom = '80px';
+                            if (casinoContent) casinoContent.style.paddingBottom = '80px';
+                        }
+                    }
+                    
+                    if (data.theme) {
+                        setTheme(data.theme, false);
+                    }
+                    
+                    if (data.petalCount !== undefined) {
+                        currentPetalCount = data.petalCount;
+                        const petalSlider = document.getElementById('petalCountSlider');
+                        const petalValue = document.getElementById('petalCountValue');
+                        if (petalSlider) petalSlider.value = currentPetalCount;
+                        if (petalValue) petalValue.textContent = currentPetalCount;
+                        createPetals(currentPetalCount);
+                    }
+                    
+                    updateDisplay();
+                } catch (e) {
+                    console.error('Error loading from storage:', e);
+                }
+            }
+        }
+        
+        function saveToStorage() {
+            const data = {
+                flowerCount: flowerCount,
+                usedPromoCodes: Array.from(usedPromoCodes),
+                unlockedThemes: [],
+                casinoUnlocked: casinoUnlocked,
+                theme: currentTheme,
+                petalCount: currentPetalCount
+            };
+            
+            if (goldThemeUnlocked) data.unlockedThemes.push('gold');
+            if (cosmicThemeUnlocked) data.unlockedThemes.push('cosmic');
+            if (darkBlueThemeUnlocked) data.unlockedThemes.push('dark-blue');
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         }
 
         // ==================== ПРОМО МОДАЛКА ====================
         const promoModal = document.getElementById('promoModal');
         const easterEgg = document.getElementById('easterEgg');
         
-        easterEgg.addEventListener('click', function() {
-            promoModal.style.display = 'flex';
-            document.getElementById('promoCodeInput').value = '';
-        });
+        if (easterEgg) {
+            easterEgg.addEventListener('click', function() {
+                if (promoModal) promoModal.style.display = 'flex';
+                const promoInput = document.getElementById('promoCodeInput');
+                if (promoInput) promoInput.value = '';
+            });
 
-        easterEgg.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            promoModal.style.display = 'flex';
-            document.getElementById('promoCodeInput').value = '';
-        });
+            easterEgg.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                if (promoModal) promoModal.style.display = 'flex';
+                const promoInput = document.getElementById('promoCodeInput');
+                if (promoInput) promoInput.value = '';
+            });
+        }
 
-        function closePromoModal() { promoModal.style.display = 'none'; }
+        function closePromoModal() { 
+            if (promoModal) promoModal.style.display = 'none'; 
+        }
 
-        // Флаги для секретных тем
-        let cosmicThemeUnlocked = false;
-        let darkBlueThemeUnlocked = false;
-
-        document.getElementById('applyPromoCodeBtn').addEventListener('click', function() {
-            const input = document.getElementById('promoCodeInput');
-            const code = input.value.trim();
-            let message = '';
-            let icon = '🎁';
-
-            if (code === '1488') {
-                flowerCount = 0;
-                updateDisplay();
-                message = '🚫 Осуждаю нацизм! Счет обнулен.';
-                icon = '🚫';
-            } else if (code === '52') {
-                flowerCount += 5200;
-                updateDisplay();
-                message = 'Санкт-Петербург! ✨ +5200 цветов';
-                icon = '🏛️';
-            } else if (code === '67') {
-                flowerCount += 1;
-                updateDisplay();
-                message = 'не смешно 😕 +1 цветок';
-                icon = '😕';
-            } else if (code === '1337') {
-                flowerCount += 133700;
-                updateDisplay();
-                message = 'elite 👾 +133700 цветов';
-                icon = '👾';
+        const applyPromoBtn = document.getElementById('applyPromoCodeBtn');
+        if (applyPromoBtn) {
+            applyPromoBtn.addEventListener('click', function() {
+                const input = document.getElementById('promoCodeInput');
+                if (!input) return;
+                const code = input.value.trim();
                 
-                // Разблокировка темно-синей темы
-                if (!darkBlueThemeUnlocked) {
-                    darkBlueThemeUnlocked = true;
-                    document.querySelector('.theme-dark-blue-btn').classList.remove('hidden');
-                    showMessage('🎉 Разблокирована Темно-синяя тема!', '🌌');
+                if (usedPromoCodes.has(code)) {
+                    showMessage('Этот промокод уже был использован!', '⚠️');
+                    closePromoModal();
+                    return;
                 }
-            } else if (code === '69') {
-                flowerCount += 690;
-                updateDisplay();
-                message = '... 😏 +690 цветов';
-                icon = '😏';
-            } else if (code === '505') {
-                flowerCount += 505812;
-                updateDisplay();
-                message = '🔥 +505812 цветов! Ого! 🔥';
-                icon = '🌟';
                 
-                // Разблокировка космической темы
-                if (!cosmicThemeUnlocked) {
-                    cosmicThemeUnlocked = true;
-                    document.querySelector('.theme-cosmic-btn').classList.remove('hidden');
-                    showMessage('🎉 Разблокирована Космическая тема!', '🌟');
-                }
-            } else {
-                message = 'Неверный промокод';
-                icon = '❌';
-            }
+                let message = '';
+                let icon = '🎁';
+                let themeToUnlock = null;
+                let themeName = '';
 
-            showMessage(message, icon);
-            
-            if (code === '1488' || code === '52' || code === '67' || code === '1337' || code === '69' || code === '505') {
-                checkVictory();
-                check50();
-            }
-            closePromoModal();
-        });
+                if (code === '1488') {
+                    flowerCount = 0;
+                    updateDisplay();
+                    message = '🚫 Осуждаю нацизм! Счет обнулен.';
+                    icon = '🚫';
+                } else if (code === '52') {
+                    addFlowers(5200);
+                    message = 'Санкт-Петербург! ✨ +5200 цветов';
+                    icon = '🏛️';
+                } else if (code === '67') {
+                    addFlowers(1);
+                    message = 'не смешно 😕 +1 цветок';
+                    icon = '😕';
+                } else if (code === '1337') {
+                    addFlowers(133700);
+                    message = 'elite 👾 +133700 цветов';
+                    icon = '👾';
+                    
+                    if (!darkBlueThemeUnlocked) {
+                        darkBlueThemeUnlocked = true;
+                        themeToUnlock = 'dark-blue';
+                        themeName = 'Темно-синяя';
+                        const darkCard = document.querySelector('.theme-card.dark-blue');
+                        if (darkCard) darkCard.classList.remove('hidden');
+                    }
+                } else if (code === '69') {
+                    addFlowers(690);
+                    message = '... 😏 +690 цветов';
+                    icon = '😏';
+                } else if (code === '505') {
+                    addFlowers(505812);
+                    message = '🔥 +505812 цветов! Ого! 🔥';
+                    icon = '🌟';
+                    
+                    if (!cosmicThemeUnlocked) {
+                        cosmicThemeUnlocked = true;
+                        themeToUnlock = 'cosmic';
+                        themeName = 'Космическая';
+                        const cosmicCard = document.querySelector('.theme-card.cosmic');
+                        if (cosmicCard) cosmicCard.classList.remove('hidden');
+                    }
+                } else {
+                    message = 'Неверный промокод';
+                    icon = '❌';
+                }
+
+                if (message) {
+                    if (themeToUnlock) {
+                        setTheme(themeToUnlock);
+                        showMessage(`🎉 Разблокирована ${themeName} тема! ${message}`, icon);
+                    } else {
+                        showMessage(message, icon);
+                    }
+                }
+                
+                if (code === '1488' || code === '52' || code === '67' || code === '1337' || code === '69' || code === '505') {
+                    usedPromoCodes.add(code);
+                    saveToStorage();
+                    checkVictory();
+                    check50();
+                }
+                closePromoModal();
+            });
+        }
 
         // ==================== НАСТРОЙКИ ====================
         const settingsModal = document.getElementById('settingsModal');
         const settingsButton = document.getElementById('settingsButton');
         const petalSlider = document.getElementById('petalCountSlider');
         const petalCountValue = document.getElementById('petalCountValue');
+        const openThemeSelectorBtn = document.getElementById('openThemeSelectorBtn');
+        const themeSelectorModal = document.getElementById('themeSelectorModal');
 
-        settingsButton.addEventListener('click', () => {
-            settingsModal.style.display = 'flex';
-        });
+        if (settingsButton) {
+            settingsButton.addEventListener('click', () => {
+                if (settingsModal) settingsModal.style.display = 'flex';
+            });
 
-        settingsButton.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            settingsModal.style.display = 'flex';
-        });
-
-        function closeSettingsModal() {
-            settingsModal.style.display = 'none';
+            settingsButton.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                if (settingsModal) settingsModal.style.display = 'flex';
+            });
         }
 
-        petalSlider.addEventListener('input', (e) => {
-            const val = e.target.value;
-            petalCountValue.textContent = val;
-            currentPetalCount = Number(val);
-            createPetals(currentPetalCount);
-        });
+        function closeSettingsModal() {
+            if (settingsModal) settingsModal.style.display = 'none';
+        }
+
+        if (openThemeSelectorBtn) {
+            openThemeSelectorBtn.addEventListener('click', () => {
+                closeSettingsModal();
+                if (themeSelectorModal) themeSelectorModal.style.display = 'flex';
+                updateThemeCardsActive();
+            });
+        }
+
+        function closeThemeSelectorModal() {
+            if (themeSelectorModal) themeSelectorModal.style.display = 'none';
+        }
+
+        function updateThemeCardsActive() {
+            document.querySelectorAll('.theme-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            const activeCard = document.querySelector(`.theme-card.${currentTheme}`);
+            if (activeCard) activeCard.classList.add('active');
+        }
+
+        function selectTheme(themeName) {
+            setTheme(themeName);
+            updateThemeCardsActive();
+        }
+
+        if (petalSlider) {
+            petalSlider.addEventListener('input', (e) => {
+                const val = e.target.value;
+                if (petalCountValue) petalCountValue.textContent = val;
+                currentPetalCount = Number(val);
+                createPetals(currentPetalCount);
+                saveToStorage();
+            });
+        }
 
         // ==================== СМЕНА ТЕМЫ ====================
-        function setTheme(themeName) {
+        function setTheme(themeName, save = true) {
             const body = document.getElementById('mainBody');
+            if (!body) return;
             
-            // Удаляем все классы тем
             body.classList.remove(
                 'theme-default', 'theme-white', 'theme-lilac', 'theme-bright-pink',
-                'theme-cosmic', 'theme-dark-blue'
+                'theme-gold', 'theme-cosmic', 'theme-dark-blue'
             );
             
-            // Добавляем выбранную тему
             body.classList.add(`theme-${themeName}`);
+            currentTheme = themeName;
             
-            // Обновляем активную кнопку
-            document.querySelectorAll('.theme-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+            createPetals(currentPetalCount);
             
-            // Находим и активируем нужную кнопку
-            const activeBtn = document.querySelector(`.theme-${themeName}-btn`);
-            if (activeBtn) {
-                activeBtn.classList.add('active');
+            // Перерисовываем колеса при смене темы
+            if (typeof drawCasinoWheel === 'function') {
+                drawCasinoWheel(casinoWheelRotation);
+            }
+            if (typeof drawWheelGame === 'function') {
+                drawWheelGame(wheelRotationGame);
             }
             
-            // Перерисовываем лепестки (чтобы применить новые цвета)
-            createPetals(currentPetalCount);
+            if (save) {
+                saveToStorage();
+            }
         }
 
         // ==================== ГАДАНИЕ НА РОМАШКЕ ====================
@@ -579,15 +1054,21 @@
             createDaisyPetals(daisyTotalPetals);
             setDaisyVisiblePetals(daisyTotalPetals);
             daisyCurrentPhraseIndex = Math.floor(Math.random() * DAISY_PHRASES.length);
-            document.getElementById('daisyFortuneText').innerText = DAISY_PHRASES[daisyCurrentPhraseIndex];
+            const fortuneText = document.getElementById('daisyFortuneText');
+            if (fortuneText) fortuneText.innerText = DAISY_PHRASES[daisyCurrentPhraseIndex];
             
-            document.getElementById('daisyPluckBtn').classList.remove('hidden');
-            document.getElementById('daisySpinBtn').classList.add('hidden');
-            document.getElementById('daisyFlower').classList.remove('spinning');
+            const pluckBtn = document.getElementById('daisyPluckBtn');
+            const spinBtn = document.getElementById('daisySpinBtn');
+            const flowerEl = document.getElementById('daisyFlower');
+            
+            if (pluckBtn) pluckBtn.classList.remove('hidden');
+            if (spinBtn) spinBtn.classList.add('hidden');
+            if (flowerEl) flowerEl.classList.remove('spinning');
         }
 
         function createDaisyPetals(maxCount) {
             const container = document.getElementById('daisyPetalsContainer');
+            if (!container) return;
             container.innerHTML = '';
             daisyPetalElements = [];
             
@@ -606,7 +1087,9 @@
 
         function setDaisyVisiblePetals(count) {
             for (let i = 0; i < daisyPetalElements.length; i++) {
-                daisyPetalElements[i].style.opacity = i < count ? '1' : '0';
+                if (daisyPetalElements[i]) {
+                    daisyPetalElements[i].style.opacity = i < count ? '1' : '0';
+                }
             }
             daisyVisiblePetals = count;
         }
@@ -615,7 +1098,7 @@
             if (daisyVisiblePetals <= 0) return;
 
             for (let i = daisyPetalElements.length - 1; i >= 0; i--) {
-                if (daisyPetalElements[i].style.opacity === '1') {
+                if (daisyPetalElements[i] && daisyPetalElements[i].style.opacity === '1') {
                     daisyPetalElements[i].style.opacity = '0';
                     break;
                 }
@@ -623,12 +1106,15 @@
             
             daisyVisiblePetals--;
             daisyCurrentPhraseIndex = (daisyCurrentPhraseIndex + 1) % DAISY_PHRASES.length;
-            document.getElementById('daisyFortuneText').innerText = DAISY_PHRASES[daisyCurrentPhraseIndex];
+            const fortuneText = document.getElementById('daisyFortuneText');
+            if (fortuneText) fortuneText.innerText = DAISY_PHRASES[daisyCurrentPhraseIndex];
 
             if (daisyVisiblePetals === 0) {
                 showMessage(`🎉 Ваше предсказание: ${DAISY_PHRASES[daisyCurrentPhraseIndex]}`, '🌼');
-                document.getElementById('daisyPluckBtn').classList.add('hidden');
-                document.getElementById('daisySpinBtn').classList.remove('hidden');
+                const pluckBtn = document.getElementById('daisyPluckBtn');
+                const spinBtn = document.getElementById('daisySpinBtn');
+                if (pluckBtn) pluckBtn.classList.add('hidden');
+                if (spinBtn) spinBtn.classList.remove('hidden');
             }
         }
 
@@ -637,16 +1123,17 @@
 
             const spinBtn = document.getElementById('daisySpinBtn');
             const flowerEl = document.getElementById('daisyFlower');
+            const fortuneText = document.getElementById('daisyFortuneText');
             
-            spinBtn.disabled = true;
-            flowerEl.classList.add('spinning');
-            document.getElementById('daisyFortuneText').innerText = '🌀 Вращаю...';
+            if (spinBtn) spinBtn.disabled = true;
+            if (flowerEl) flowerEl.classList.add('spinning');
+            if (fortuneText) fortuneText.innerText = '🌀 Вращаю...';
 
             const targetCount = Math.floor(Math.random() * 4) + 9;
             let current = 0;
             
             const interval = setInterval(() => {
-                if (!flowerEl.classList.contains('spinning')) {
+                if (!flowerEl || !flowerEl.classList.contains('spinning')) {
                     clearInterval(interval);
                     return;
                 }
@@ -654,13 +1141,15 @@
                 current++;
                 
                 for (let i = 0; i < daisyPetalElements.length; i++) {
-                    daisyPetalElements[i].style.opacity = i < current ? '1' : '0';
+                    if (daisyPetalElements[i]) {
+                        daisyPetalElements[i].style.opacity = i < current ? '1' : '0';
+                    }
                 }
 
                 if (current >= targetCount) {
                     clearInterval(interval);
                     setTimeout(() => {
-                        if (flowerEl.classList.contains('spinning')) {
+                        if (flowerEl && flowerEl.classList.contains('spinning')) {
                             finishDaisySpin(targetCount);
                         }
                     }, 200);
@@ -670,50 +1159,63 @@
 
         function finishDaisySpin(newCount) {
             const flowerEl = document.getElementById('daisyFlower');
-            flowerEl.classList.remove('spinning');
+            const fortuneText = document.getElementById('daisyFortuneText');
+            const pluckBtn = document.getElementById('daisyPluckBtn');
+            const spinBtn = document.getElementById('daisySpinBtn');
+            
+            if (flowerEl) flowerEl.classList.remove('spinning');
             daisyVisiblePetals = newCount;
             
             daisyCurrentPhraseIndex = Math.floor(Math.random() * DAISY_PHRASES.length);
-            document.getElementById('daisyFortuneText').innerText = '✨ Гадание готово ✨';
+            if (fortuneText) fortuneText.innerText = '✨ Гадание готово ✨';
 
-            document.getElementById('daisyPluckBtn').classList.remove('hidden');
-            document.getElementById('daisySpinBtn').classList.add('hidden');
-            document.getElementById('daisySpinBtn').disabled = false;
+            if (pluckBtn) pluckBtn.classList.remove('hidden');
+            if (spinBtn) {
+                spinBtn.classList.add('hidden');
+                spinBtn.disabled = false;
+            }
 
             flowerRain(18);
         }
 
-        daisyGameBtn.addEventListener('click', function() {
-            if (flowerCount < 10) {
-                showMessage('Недостаточно цветов! Нужно 10 🌸', '💔');
-                return;
-            }
-            
-            flowerCount -= 10;
-            updateDisplay();
-            initDaisyGame();
-            daisyModal.style.display = 'flex';
-        });
+        if (daisyGameBtn) {
+            daisyGameBtn.addEventListener('click', function() {
+                if (flowerCount < 10) {
+                    showMessage('Недостаточно цветов! Нужно 10 🌸', '💔');
+                    return;
+                }
+                
+                flowerCount -= 10;
+                updateDisplay();
+                saveToStorage();
+                initDaisyGame();
+                if (daisyModal) daisyModal.style.display = 'flex';
+            });
 
-        daisyGameBtn.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            if (flowerCount < 10) {
-                showMessage('Недостаточно цветов! Нужно 10 🌸', '💔');
-                return;
-            }
-            
-            flowerCount -= 10;
-            updateDisplay();
-            initDaisyGame();
-            daisyModal.style.display = 'flex';
-        });
-
-        function closeDaisyModal() {
-            daisyModal.style.display = 'none';
+            daisyGameBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                if (flowerCount < 10) {
+                    showMessage('Недостаточно цветов! Нужно 10 🌸', '💔');
+                    return;
+                }
+                
+                flowerCount -= 10;
+                updateDisplay();
+                saveToStorage();
+                initDaisyGame();
+                if (daisyModal) daisyModal.style.display = 'flex';
+            });
         }
 
-        document.getElementById('daisyPluckBtn').addEventListener('click', pluckDaisyPetal);
-        document.getElementById('daisySpinBtn').addEventListener('click', startDaisySpin);
+        function closeDaisyModal() {
+            if (daisyModal) daisyModal.style.display = 'none';
+        }
+
+        const daisyPluckBtn = document.getElementById('daisyPluckBtn');
+        const daisySpinBtn = document.getElementById('daisySpinBtn');
+        
+        if (daisyPluckBtn) daisyPluckBtn.addEventListener('click', pluckDaisyPetal);
+        if (daisySpinBtn) daisySpinBtn.addEventListener('click', startDaisySpin);
 
         // ==================== РУЛЕТКА "БУКЕТ" ====================
         const wheelModal = document.getElementById('wheelModal');
@@ -732,34 +1234,260 @@
         ];
         
         const wheelSectorCount = 8;
-        let wheelCanvas = document.getElementById('wheelCanvas');
-        let wheelCtx = wheelCanvas.getContext('2d');
-        let wheelRotation = 0;
-        let wheelIsSpinning = false;
-        let wheelAnimFrame = null;
-        let wheelVelocity = 0;
-        const wheelFriction = 0.985;
-        const wheelMinSpin = 0.005;
+        let wheelCanvasGame = document.getElementById('wheelCanvasGame');
+        let wheelCtxGame = wheelCanvasGame ? wheelCanvasGame.getContext('2d') : null;
+        let wheelRotationGame = 0;
+        let wheelIsSpinningGame = false;
+        let wheelAnimFrameGame = null;
+        let wheelVelocityGame = 0;
+        const wheelFrictionGame = 0.985;
+        const wheelMinSpinGame = 0.005;
 
-        function drawWheel(rotation) {
-            wheelCtx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
-            const centerX = wheelCanvas.width / 2;
-            const centerY = wheelCanvas.height / 2;
-            const radius = wheelCanvas.width * 0.42;
+        function drawWheelGame(rotation) {
+            if (!wheelCtxGame || !wheelCanvasGame) return;
+            
+            wheelCtxGame.clearRect(0, 0, wheelCanvasGame.width, wheelCanvasGame.height);
+            const centerX = wheelCanvasGame.width / 2;
+            const centerY = wheelCanvasGame.height / 2;
+            const radius = wheelCanvasGame.width * 0.42;
             const angleStep = (Math.PI * 2) / wheelSectorCount;
 
             for (let i = 0; i < wheelSectorCount; i++) {
                 const start = i * angleStep + rotation;
                 const end = start + angleStep;
 
-                wheelCtx.fillStyle = (i % 2 === 0) ? '#ffd9e6' : '#ffe4f0';
+                const sectorColor = getComputedStyle(document.body).getPropertyValue(i % 2 === 0 ? '--wheel-sector-even' : '--wheel-sector-odd').trim() || (i % 2 === 0 ? '#ffd9e6' : '#ffe4f0');
+                wheelCtxGame.fillStyle = sectorColor;
+                wheelCtxGame.beginPath();
+                wheelCtxGame.moveTo(centerX, centerY);
+                wheelCtxGame.arc(centerX, centerY, radius, start, end);
+                wheelCtxGame.closePath();
+                wheelCtxGame.fill();
+
+                const strokeColor = getComputedStyle(document.body).getPropertyValue('--wheel-sector-stroke').trim() || '#ffffff';
+                wheelCtxGame.strokeStyle = strokeColor;
+                wheelCtxGame.lineWidth = 2.5;
+                wheelCtxGame.beginPath();
+                wheelCtxGame.moveTo(centerX, centerY);
+                wheelCtxGame.arc(centerX, centerY, radius, start, end);
+                wheelCtxGame.lineTo(centerX, centerY);
+                wheelCtxGame.stroke();
+
+                wheelCtxGame.save();
+                wheelCtxGame.translate(centerX, centerY);
+                const midAngle = start + angleStep / 2;
+                wheelCtxGame.rotate(midAngle);
+                
+                const textRadius = radius * 0.7;
+                wheelCtxGame.font = `500 ${radius * 0.4}px 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif`;
+                
+                const textColor = getComputedStyle(document.body).getPropertyValue('--wheel-text-color').trim() || '#9f5f74';
+                const textShadow = getComputedStyle(document.body).getPropertyValue('--wheel-text-shadow').trim() || '#ffb7c5';
+                
+                wheelCtxGame.fillStyle = textColor;
+                wheelCtxGame.shadowColor = textShadow;
+                wheelCtxGame.shadowBlur = 12;
+                wheelCtxGame.textAlign = 'center';
+                wheelCtxGame.textBaseline = 'middle';
+                wheelCtxGame.fillText(WHEEL_FLOWERS[i].emoji, textRadius, 0);
+                
+                wheelCtxGame.restore();
+            }
+
+            const centerBg = getComputedStyle(document.body).getPropertyValue('--wheel-center-bg').trim() || '#ffffff';
+            const centerShadow = getComputedStyle(document.body).getPropertyValue('--wheel-center-shadow').trim() || '#ffb0c0';
+            const centerStroke = getComputedStyle(document.body).getPropertyValue('--wheel-center-stroke').trim() || '#ffb7c5';
+
+            wheelCtxGame.beginPath();
+            wheelCtxGame.arc(centerX, centerY, 14, 0, 2 * Math.PI);
+            wheelCtxGame.fillStyle = centerBg;
+            wheelCtxGame.shadowBlur = 16;
+            wheelCtxGame.shadowColor = centerShadow;
+            wheelCtxGame.fill();
+            wheelCtxGame.shadowBlur = 0;
+            wheelCtxGame.strokeStyle = centerStroke;
+            wheelCtxGame.lineWidth = 3;
+            wheelCtxGame.stroke();
+            
+            // Обводка колеса
+            wheelCtxGame.beginPath();
+            wheelCtxGame.arc(centerX, centerY, radius + 5, 0, 2 * Math.PI);
+            wheelCtxGame.strokeStyle = centerStroke;
+            wheelCtxGame.lineWidth = 4;
+            wheelCtxGame.stroke();
+        }
+
+        function spinWheelGameAnimation() {
+            if (!wheelIsSpinningGame) return;
+
+            wheelVelocityGame *= wheelFrictionGame;
+            wheelRotationGame += wheelVelocityGame;
+            drawWheelGame(wheelRotationGame);
+
+            if (Math.abs(wheelVelocityGame) > wheelMinSpinGame) {
+                wheelAnimFrameGame = requestAnimationFrame(spinWheelGameAnimation);
+            } else {
+                wheelIsSpinningGame = false;
+                if (wheelAnimFrameGame) {
+                    cancelAnimationFrame(wheelAnimFrameGame);
+                    wheelAnimFrameGame = null;
+                }
+
+                if (wheelSpinBtn) wheelSpinBtn.disabled = false;
+                if (wheelCanvasGame) wheelCanvasGame.style.pointerEvents = 'auto';
+
+                let norm = (wheelRotationGame % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+                const upAngle = (3 * Math.PI) / 2;
+                let localUp = upAngle - norm;
+                localUp = (localUp % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+                const angleStep = (2 * Math.PI) / wheelSectorCount;
+                let index = Math.floor(localUp / angleStep);
+                if (index >= wheelSectorCount) index = wheelSectorCount - 1;
+
+                const result = WHEEL_FLOWERS[index];
+                flowerRain(100, result.emoji);
+            }
+        }
+
+        function startWheelGameSpin() {
+            if (flowerCount < 10) {
+                showMessage('Недостаточно цветов! Нужно 10 🌸', '💔');
+                if (wheelModal) wheelModal.style.display = 'none';
+                return;
+            }
+            
+            if (wheelIsSpinningGame) return;
+
+            flowerCount -= 10;
+            updateDisplay();
+            saveToStorage();
+
+            wheelIsSpinningGame = true;
+            if (wheelSpinBtn) wheelSpinBtn.disabled = true;
+            if (wheelCanvasGame) wheelCanvasGame.style.pointerEvents = 'none';
+            
+            const targetFull = 10 * Math.PI;
+            const randomAdd = Math.random() * 2 * Math.PI;
+            const totalAngle = targetFull + randomAdd;
+            wheelVelocityGame = totalAngle * (1 - wheelFrictionGame) * 1.2;
+
+            if (wheelAnimFrameGame) cancelAnimationFrame(wheelAnimFrameGame);
+            wheelAnimFrameGame = requestAnimationFrame(spinWheelGameAnimation);
+        }
+
+        if (wheelGameBtn) {
+            wheelGameBtn.addEventListener('click', function() {
+                if (flowerCount < 10) {
+                    showMessage('Недостаточно цветов! Нужно 10 🌸', '💔');
+                    return;
+                }
+                
+                if (wheelCanvasGame) drawWheelGame(wheelRotationGame);
+                if (wheelModal) wheelModal.style.display = 'flex';
+                if (wheelSpinBtn) wheelSpinBtn.disabled = false;
+                if (wheelCanvasGame) wheelCanvasGame.style.pointerEvents = 'auto';
+            });
+
+            wheelGameBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                if (flowerCount < 10) {
+                    showMessage('Недостаточно цветов! Нужно 10 🌸', '💔');
+                    return;
+                }
+                
+                if (wheelCanvasGame) drawWheelGame(wheelRotationGame);
+                if (wheelModal) wheelModal.style.display = 'flex';
+                if (wheelSpinBtn) wheelSpinBtn.disabled = false;
+                if (wheelCanvasGame) wheelCanvasGame.style.pointerEvents = 'auto';
+            });
+        }
+
+        function closeWheelModal() {
+            if (wheelModal) wheelModal.style.display = 'none';
+        }
+
+        if (wheelSpinBtn) {
+            wheelSpinBtn.addEventListener('click', startWheelGameSpin);
+        }
+        
+        if (wheelCanvasGame) {
+            wheelCanvasGame.addEventListener('click', startWheelGameSpin);
+        }
+
+        // ==================== НАВИГАЦИЯ ====================
+        const mainContent = document.getElementById('mainContent');
+        const casinoContent = document.getElementById('casinoContent');
+        const navMainBtn = document.getElementById('navMainBtn');
+        const navCasinoBtn = document.getElementById('navCasinoBtn');
+        const bottomNav = document.getElementById('bottomNav');
+
+        function showMain() {
+            if (mainContent) mainContent.style.display = 'block';
+            if (casinoContent) casinoContent.style.display = 'none';
+            if (navMainBtn) navMainBtn.classList.add('active');
+            if (navCasinoBtn) navCasinoBtn.classList.remove('active');
+        }
+
+        function showCasino() {
+            if (!casinoUnlocked) return;
+            if (mainContent) mainContent.style.display = 'none';
+            if (casinoContent) casinoContent.style.display = 'block';
+            if (navCasinoBtn) navCasinoBtn.classList.add('active');
+            if (navMainBtn) navMainBtn.classList.remove('active');
+
+            updateCasinoBalance();
+            const lastResult = document.getElementById('lastResult');
+            if (lastResult) lastResult.innerHTML = 'Сделай ставку';
+        }
+
+        if (navMainBtn) navMainBtn.addEventListener('click', showMain);
+        if (navCasinoBtn) navCasinoBtn.addEventListener('click', showCasino);
+
+        // ==================== КАЗИНО ====================
+        const SECTORS = [0, 0, 0.1, 0.1, 1.5, 2, 5, 11];
+
+        const casinoBalanceSpan = document.getElementById('casinoBalanceDisplay');
+        const casinoBetInput = document.getElementById('betInput');
+        const casinoSpinBtn = document.getElementById('spinButton');
+        const casinoLastResult = document.getElementById('lastResult');
+        const wheelCanvas = document.getElementById('wheelCanvas');
+        let wheelCtx = wheelCanvas ? wheelCanvas.getContext('2d') : null;
+        
+        const casinoResultModal = document.getElementById('casinoResultModal');
+        const casinoResultIcon = document.getElementById('casinoResultIcon');
+        const casinoResultMessage = document.getElementById('casinoResultMessage');
+        const casinoResultMultiplier = document.getElementById('casinoResultMultiplier');
+        
+        let casinoWheelRotation = 0;
+        let casinoWheelIsSpinning = false;
+        let casinoWheelAnimFrame = null;
+        let casinoWheelVelocity = 0;
+        const casinoWheelFriction = 0.985;
+        const casinoWheelMinSpin = 0.002;
+
+        function drawCasinoWheel(rotation) {
+            if (!wheelCtx || !wheelCanvas) return;
+            
+            wheelCtx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
+            const centerX = wheelCanvas.width / 2;
+            const centerY = wheelCanvas.height / 2;
+            const radius = wheelCanvas.width * 0.42;
+            const angleStep = (Math.PI * 2) / SECTORS.length;
+
+            for (let i = 0; i < SECTORS.length; i++) {
+                const start = i * angleStep + rotation;
+                const end = start + angleStep;
+
+                const sectorColor = getComputedStyle(document.body).getPropertyValue(i % 2 === 0 ? '--wheel-sector-even' : '--wheel-sector-odd').trim() || (i % 2 === 0 ? '#ffd9e6' : '#ffe4f0');
+                wheelCtx.fillStyle = sectorColor;
                 wheelCtx.beginPath();
                 wheelCtx.moveTo(centerX, centerY);
                 wheelCtx.arc(centerX, centerY, radius, start, end);
                 wheelCtx.closePath();
                 wheelCtx.fill();
 
-                wheelCtx.strokeStyle = '#ffffff';
+                const strokeColor = getComputedStyle(document.body).getPropertyValue('--wheel-sector-stroke').trim() || '#ffffff';
+                wheelCtx.strokeStyle = strokeColor;
                 wheelCtx.lineWidth = 2.5;
                 wheelCtx.beginPath();
                 wheelCtx.moveTo(centerX, centerY);
@@ -772,164 +1500,197 @@
                 const midAngle = start + angleStep / 2;
                 wheelCtx.rotate(midAngle);
                 
-                const textRadius = radius * 0.7;
-                wheelCtx.font = `500 ${radius * 0.45}px 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif`;
-                wheelCtx.fillStyle = '#9f5f74';
-                wheelCtx.shadowColor = '#ffb7c5';
+                const textRadius = radius * 0.65;
+                wheelCtx.font = `500 ${radius * 0.35}px 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif`;
+                
+                const multiplier = SECTORS[i];
+                const multiplierText = multiplier === 0 ? '0' : `x${multiplier}`;
+                
+                const textColor = getComputedStyle(document.body).getPropertyValue('--wheel-text-color').trim() || '#9f5f74';
+                const textShadow = getComputedStyle(document.body).getPropertyValue('--wheel-text-shadow').trim() || '#ffb7c5';
+                
+                wheelCtx.fillStyle = textColor;
+                wheelCtx.shadowColor = textShadow;
                 wheelCtx.shadowBlur = 12;
                 wheelCtx.textAlign = 'center';
                 wheelCtx.textBaseline = 'middle';
-                wheelCtx.fillText(WHEEL_FLOWERS[i].emoji, textRadius, 0);
+                wheelCtx.fillText(multiplierText, textRadius, 0);
                 
                 wheelCtx.restore();
             }
 
+            const centerBg = getComputedStyle(document.body).getPropertyValue('--wheel-center-bg').trim() || '#ffffff';
+            const centerShadow = getComputedStyle(document.body).getPropertyValue('--wheel-center-shadow').trim() || '#ffb0c0';
+            const centerStroke = getComputedStyle(document.body).getPropertyValue('--wheel-center-stroke').trim() || '#ffb7c5';
+
             wheelCtx.beginPath();
             wheelCtx.arc(centerX, centerY, 14, 0, 2 * Math.PI);
-            wheelCtx.fillStyle = '#ffffff';
+            wheelCtx.fillStyle = centerBg;
             wheelCtx.shadowBlur = 16;
-            wheelCtx.shadowColor = '#ffb0c0';
+            wheelCtx.shadowColor = centerShadow;
             wheelCtx.fill();
             wheelCtx.shadowBlur = 0;
-            wheelCtx.strokeStyle = '#ffb7c5';
+            wheelCtx.strokeStyle = centerStroke;
             wheelCtx.lineWidth = 3;
+            wheelCtx.stroke();
+            
+            // Обводка колеса
+            wheelCtx.beginPath();
+            wheelCtx.arc(centerX, centerY, radius + 5, 0, 2 * Math.PI);
+            wheelCtx.strokeStyle = centerStroke;
+            wheelCtx.lineWidth = 4;
             wheelCtx.stroke();
         }
 
-        function spinWheelAnimation() {
-            if (!wheelIsSpinning) return;
+        function updateCasinoBalance() {
+            if (casinoBalanceSpan) casinoBalanceSpan.textContent = flowerCount.toLocaleString();
+        }
 
-            wheelVelocity *= wheelFriction;
-            wheelRotation += wheelVelocity;
-            drawWheel(wheelRotation);
-
-            if (Math.abs(wheelVelocity) > wheelMinSpin) {
-                wheelAnimFrame = requestAnimationFrame(spinWheelAnimation);
+        function showCasinoResult(isWin, multiplier, winAmount) {
+            if (!casinoResultModal || !casinoResultIcon || !casinoResultMessage || !casinoResultMultiplier) return;
+            
+            if (isWin) {
+                casinoResultIcon.textContent = '🎉💰🎉';
+                casinoResultMessage.textContent = `Вы выиграли ${winAmount} цветов!`;
+                casinoResultMultiplier.textContent = `x${multiplier}`;
             } else {
-                wheelIsSpinning = false;
-                if (wheelAnimFrame) {
-                    cancelAnimationFrame(wheelAnimFrame);
-                    wheelAnimFrame = null;
+                casinoResultIcon.textContent = '😢💔😢';
+                casinoResultMessage.textContent = 'К сожалению, проигрыш';
+                casinoResultMultiplier.textContent = 'x0';
+            }
+            
+            casinoResultModal.style.display = 'flex';
+        }
+
+        function closeCasinoResultModal() {
+            if (casinoResultModal) casinoResultModal.style.display = 'none';
+        }
+
+        function casinoSpinAnimation() {
+            if (!casinoWheelIsSpinning) return;
+
+            casinoWheelVelocity *= casinoWheelFriction;
+            casinoWheelRotation += casinoWheelVelocity;
+            drawCasinoWheel(casinoWheelRotation);
+
+            if (Math.abs(casinoWheelVelocity) > casinoWheelMinSpin) {
+                casinoWheelAnimFrame = requestAnimationFrame(casinoSpinAnimation);
+            } else {
+                casinoWheelIsSpinning = false;
+                if (casinoWheelAnimFrame) cancelAnimationFrame(casinoWheelAnimFrame);
+                casinoWheelAnimFrame = null;
+
+                const idx = getCasinoSectorIndex(casinoWheelRotation);
+                const multiplier = SECTORS[idx];
+                const bet = parseInt(casinoBetInput ? casinoBetInput.value : '10', 10);
+
+                if (bet < 1 || isNaN(bet)) {
+                    showMessage('Ставка должна быть ≥ 1', '⚠️');
+                    if (casinoSpinBtn) casinoSpinBtn.disabled = false;
+                    return;
                 }
 
-                // Активируем кнопку после окончания вращения
-                wheelSpinBtn.disabled = false;
-                wheelCanvas.style.pointerEvents = 'auto';
-
-                // Определяем выпавший цветок
-                let norm = (wheelRotation % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
-                const upAngle = (3 * Math.PI) / 2;
-                let localUp = upAngle - norm;
-                localUp = (localUp % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
-                const angleStep = (2 * Math.PI) / wheelSectorCount;
-                let index = Math.floor(localUp / angleStep);
-                if (index >= wheelSectorCount) index = wheelSectorCount - 1;
-
-                const result = WHEEL_FLOWERS[index];
+                const win = Math.floor(bet * multiplier);
                 
-                // Цветопад из 100 таких цветков
-                flowerRain(100, result.emoji);
+                if (multiplier > 0) {
+                    flowerCount += win;
+                    if (casinoLastResult) casinoLastResult.innerHTML = `🎉 x${multiplier} = +${win} 🌸`;
+                    flowerRain(16, '🌸');
+                    showCasinoResult(true, multiplier, win);
+                } else {
+                    if (casinoLastResult) casinoLastResult.innerHTML = `😢 x0 — проигрыш`;
+                    flowerRain(8, '🌧️');
+                    showCasinoResult(false, 0, 0);
+                }
+
+                updateDisplay();
+                updateCasinoBalance();
+                saveToStorage();
+                if (casinoSpinBtn) casinoSpinBtn.disabled = false;
             }
         }
 
-        function startWheelSpin() {
-            // Проверяем, достаточно ли цветов перед каждым вращением
-            if (flowerCount < 10) {
-                showMessage('Недостаточно цветов! Нужно 10 🌸', '💔');
-                closeWheelModal();
+        function casinoStartSpin() {
+            if (casinoWheelIsSpinning) return;
+
+            const bet = parseInt(casinoBetInput ? casinoBetInput.value : '10', 10);
+            if (isNaN(bet) || bet < 1) {
+                showMessage('Введи ставку ≥ 1', '⚠️');
                 return;
             }
             
-            if (wheelIsSpinning) return;
+            if (bet > flowerCount) {
+                showMessage(`Не хватает! Баланс: ${flowerCount}`, '💔');
+                return;
+            }
 
-            // Списываем цветы
-            flowerCount -= 10;
+            flowerCount -= bet;
             updateDisplay();
+            updateCasinoBalance();
 
-            wheelIsSpinning = true;
-            wheelSpinBtn.disabled = true;
-            wheelCanvas.style.pointerEvents = 'none';
-            
-            const targetFull = 10 * Math.PI;
+            casinoWheelIsSpinning = true;
+            if (casinoSpinBtn) casinoSpinBtn.disabled = true;
+
+            const spins = 10 * Math.PI;
             const randomAdd = Math.random() * 2 * Math.PI;
-            const totalAngle = targetFull + randomAdd;
-            wheelVelocity = totalAngle * (1 - wheelFriction) * 1.2;
+            casinoWheelVelocity = (spins + randomAdd) * (1 - casinoWheelFriction) * 0.9;
 
-            if (wheelAnimFrame) cancelAnimationFrame(wheelAnimFrame);
-            wheelAnimFrame = requestAnimationFrame(spinWheelAnimation);
+            if (casinoWheelAnimFrame) cancelAnimationFrame(casinoWheelAnimFrame);
+            casinoWheelAnimFrame = requestAnimationFrame(casinoSpinAnimation);
         }
 
-        wheelGameBtn.addEventListener('click', function() {
-            if (flowerCount < 10) {
-                showMessage('Недостаточно цветов! Нужно 10 🌸', '💔');
-                return;
-            }
-            
-            // Не списываем цветы при открытии модалки, только при вращении
-            drawWheel(wheelRotation);
-            wheelModal.style.display = 'flex';
-            wheelSpinBtn.disabled = false;
-            wheelCanvas.style.pointerEvents = 'auto';
-        });
-
-        wheelGameBtn.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            if (flowerCount < 10) {
-                showMessage('Недостаточно цветов! Нужно 10 🌸', '💔');
-                return;
-            }
-            
-            drawWheel(wheelRotation);
-            wheelModal.style.display = 'flex';
-            wheelSpinBtn.disabled = false;
-            wheelCanvas.style.pointerEvents = 'auto';
-        });
-
-        function closeWheelModal() {
-            wheelModal.style.display = 'none';
+        function getCasinoSectorIndex(angle) {
+            let norm = (angle % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+            const upAngle = 3 * Math.PI / 2;
+            let localUp = (upAngle - norm + 2 * Math.PI) % (2 * Math.PI);
+            const step = (2 * Math.PI) / SECTORS.length;
+            let idx = Math.floor(localUp / step);
+            return idx >= SECTORS.length ? SECTORS.length - 1 : idx;
         }
 
-        wheelSpinBtn.addEventListener('click', startWheelSpin);
-        wheelCanvas.addEventListener('click', startWheelSpin);
-
-        // ==================== ЗАКРЫТИЕ МОДАЛОК ====================
-        window.onclick = function(event) {
-            if (event.target === nameModal) closeNameModal();
-            if (event.target === victoryModal) closeVictoryModal();
-            if (event.target === complimentModal) closeComplimentModal();
-            if (event.target === promoModal) closePromoModal();
-            if (event.target === settingsModal) closeSettingsModal();
-            if (event.target === daisyModal) closeDaisyModal();
-            if (event.target === wheelModal) closeWheelModal();
-            if (event.target === messageModal) closeMessageModal();
-        };
-
-        document.querySelectorAll('.custom-modal-content').forEach(modal => {
-            modal.addEventListener('touchmove', (e) => {
-                e.stopPropagation();
+        const maxBetBtn = document.getElementById('maxBetBtn');
+        if (maxBetBtn) {
+            maxBetBtn.addEventListener('click', () => {
+                if (casinoBetInput) casinoBetInput.value = flowerCount;
             });
-        });
+        }
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                if (messageModal.style.display === 'flex') closeMessageModal();
-                if (daisyModal.style.display === 'flex') closeDaisyModal();
-                if (wheelModal.style.display === 'flex') closeWheelModal();
-                if (settingsModal.style.display === 'flex') closeSettingsModal();
-                if (promoModal.style.display === 'flex') closePromoModal();
-            }
-        });
+        if (casinoSpinBtn) {
+            casinoSpinBtn.addEventListener('click', casinoStartSpin);
+        }
+        
+        if (wheelCanvas) {
+            wheelCanvas.addEventListener('click', casinoStartSpin);
+        }
 
-        // Инициализация
+        function closeGamblerModal() {
+            const modal = document.getElementById('gamblerModal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
         createPetals(currentPetalCount);
-        updateDisplay();
-        drawWheel(wheelRotation);
+        loadFromStorage();
+        
+        // Рисуем колеса при загрузке
+        if (wheelCanvas) drawCasinoWheel(casinoWheelRotation);
+        if (wheelCanvasGame) drawWheelGame(wheelRotationGame);
 
-        document.addEventListener('touchstart', (e) => {
-            if (e.touches.length > 1) {
-                e.preventDefault();
-            }
-        }, { passive: false });
+        // Добавляем глобальные функции для onclick
+        window.closeNameModal = closeNameModal;
+        window.closeVictoryModal = closeVictoryModal;
+        window.closeComplimentModal = closeComplimentModal;
+        window.closePromoModal = closePromoModal;
+        window.closeSettingsModal = closeSettingsModal;
+        window.closeThemeSelectorModal = closeThemeSelectorModal;
+        window.closeDaisyModal = closeDaisyModal;
+        window.closeWheelModal = closeWheelModal;
+        window.closeMessageModal = closeMessageModal;
+        window.closeGamblerModal = closeGamblerModal;
+        window.closeCasinoResultModal = closeCasinoResultModal;
+        window.setTheme = setTheme;
+        window.openNameModal = openNameModal;
+        window.selectTheme = selectTheme;
     </script>
 </body>
 </html>

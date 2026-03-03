@@ -153,15 +153,20 @@
     --theme-btn-active-shadow: 0 0 15px #ffb7c5;
     
     /* Переменные для рулетки */
-    --wheel-btn-bg: #ffe4b0; /* Желтая кнопка */
+    --wheel-btn-bg: #ffe4b0;
     --wheel-container-bg: rgba(255, 240, 250, 0.7);
     --wheel-container-border: rgba(255, 255, 255, 0.8);
-    --wheel-shadow: 0 15px 30px rgba(240, 140, 170, 0.5),
-                    0 0 0 3px white inset,
-                    0 0 0 6px #ffd0dd;
+    --wheel-sector-even: #ffd9e6;
+    --wheel-sector-odd: #ffe4f0;
+    --wheel-sector-stroke: #ffffff;
+    --wheel-text-color: #9f5f74;
+    --wheel-text-shadow: #ffb7c5;
+    --wheel-center-bg: #ffffff;
+    --wheel-center-shadow: #ffb0c0;
+    --wheel-center-stroke: #ffb7c5;
     --wheel-pointer-color: #ffa5bc;
     --wheel-pointer-shadow: rgba(255, 140, 170, 0.5);
-    --wheel-spin-btn-bg: #ffe4b0; /* Желтая кнопка */
+    --wheel-spin-btn-bg: #ffe4b0;
     --wheel-spin-btn-border: white;
     --wheel-spin-btn-color: #a55e71;
     --wheel-spin-btn-shadow: 0 8px 0 #e6b7c8, 0 12px 20px rgba(255, 150, 180, 0.4);
@@ -328,15 +333,20 @@
     --theme-btn-active-shadow: 0 0 15px #cccccc;
     
     /* Переменные для рулетки */
-    --wheel-btn-bg: #ffe4b0; /* Желтая кнопка */
+    --wheel-btn-bg: #ffe4b0;
     --wheel-container-bg: rgba(240, 240, 240, 0.7);
     --wheel-container-border: rgba(255, 255, 255, 0.8);
-    --wheel-shadow: 0 15px 30px rgba(200, 200, 200, 0.5),
-                    0 0 0 3px white inset,
-                    0 0 0 6px #dddddd;
+    --wheel-sector-even: #f0f0f0;
+    --wheel-sector-odd: #e8e8e8;
+    --wheel-sector-stroke: #ffffff;
+    --wheel-text-color: #666666;
+    --wheel-text-shadow: #cccccc;
+    --wheel-center-bg: #ffffff;
+    --wheel-center-shadow: #cccccc;
+    --wheel-center-stroke: #aaaaaa;
     --wheel-pointer-color: #cccccc;
     --wheel-pointer-shadow: rgba(200, 200, 200, 0.5);
-    --wheel-spin-btn-bg: #ffe4b0; /* Желтая кнопка */
+    --wheel-spin-btn-bg: #ffe4b0;
     --wheel-spin-btn-border: white;
     --wheel-spin-btn-color: #666666;
     --wheel-spin-btn-shadow: 0 8px 0 #dddddd, 0 12px 20px rgba(200, 200, 200, 0.4);
@@ -503,15 +513,20 @@
     --theme-btn-active-shadow: 0 0 15px #ce93d8;
     
     /* Переменные для рулетки */
-    --wheel-btn-bg: #ffe4b0; /* Желтая кнопка */
+    --wheel-btn-bg: #ffe4b0;
     --wheel-container-bg: rgba(240, 220, 250, 0.7);
     --wheel-container-border: rgba(255, 255, 255, 0.8);
-    --wheel-shadow: 0 15px 30px rgba(200, 150, 220, 0.5),
-                    0 0 0 3px white inset,
-                    0 0 0 6px #d9b0e6;
+    --wheel-sector-even: #f0d5fa;
+    --wheel-sector-odd: #e8c5f0;
+    --wheel-sector-stroke: #ffffff;
+    --wheel-text-color: #7b4b8f;
+    --wheel-text-shadow: #d9b0e6;
+    --wheel-center-bg: #ffffff;
+    --wheel-center-shadow: #d9b0e6;
+    --wheel-center-stroke: #ce93d8;
     --wheel-pointer-color: #ce93d8;
     --wheel-pointer-shadow: rgba(200, 150, 220, 0.5);
-    --wheel-spin-btn-bg: #ffe4b0; /* Желтая кнопка */
+    --wheel-spin-btn-bg: #ffe4b0;
     --wheel-spin-btn-border: white;
     --wheel-spin-btn-color: #7b4b8f;
     --wheel-spin-btn-shadow: 0 8px 0 #d9b0e6, 0 12px 20px rgba(200, 150, 220, 0.4);
@@ -678,15 +693,20 @@
     --theme-btn-active-shadow: 0 0 15px #ff8aa1;
     
     /* Переменные для рулетки */
-    --wheel-btn-bg: #ffe4b0; /* Желтая кнопка */
+    --wheel-btn-bg: #ffe4b0;
     --wheel-container-bg: rgba(255, 210, 230, 0.8);
     --wheel-container-border: rgba(255, 255, 255, 0.8);
-    --wheel-shadow: 0 15px 30px rgba(255, 100, 150, 0.6),
-                    0 0 0 3px white inset,
-                    0 0 0 6px #ffb0c5;
+    --wheel-sector-even: #ffd5e5;
+    --wheel-sector-odd: #ffc5d5;
+    --wheel-sector-stroke: #ffffff;
+    --wheel-text-color: #b83858;
+    --wheel-text-shadow: #ff8aa1;
+    --wheel-center-bg: #ffffff;
+    --wheel-center-shadow: #ff8aa1;
+    --wheel-center-stroke: #ff527b;
     --wheel-pointer-color: #ff8aa1;
-    --wheel-pointer-shadow: rgba(255, 100, 150, 0.6);
-    --wheel-spin-btn-bg: #ffe4b0; /* Желтая кнопка */
+    --wheel-pointer-shadow: rgba(255, 100, 150, 0.5);
+    --wheel-spin-btn-bg: #ffe4b0;
     --wheel-spin-btn-border: white;
     --wheel-spin-btn-color: #b83858;
     --wheel-spin-btn-shadow: 0 8px 0 #ffb0c5, 0 12px 20px rgba(255, 100, 150, 0.5);
@@ -696,6 +716,186 @@
     --game-btn-border: white;
     --game-btn-color: #a1324f;
     --game-btn-shadow: 0 8px 15px #ff8aa1;
+}
+
+/* ==================== Тема "Золотая" (секретная) ==================== */
+.theme-gold {
+    --bg-gradient: linear-gradient(150deg, #fbf3e0 0%, #f7e9c4 50%, #f5d0a0 100%);
+    --petal-opacity: 0.4;
+    --petal-color: #ffd700;
+    --petal-shadow: rgba(255, 215, 0, 0.3);
+    
+    --card-bg: rgba(255, 250, 240, 0.9);
+    --card-shadow: 0 15px 30px rgba(255, 200, 0, 0.3),
+                   0 0 0 2px rgba(255, 255, 255, 0.9) inset;
+    --card-border: rgba(255, 215, 0, 0.5);
+    
+    --settings-btn-bg: rgba(255, 240, 200, 0.8);
+    --settings-btn-border: #ffd700;
+    --settings-btn-shadow: 0 2px 8px #ffb347;
+    --settings-btn-active: #fff0c0;
+    
+    --title-color: #b8860b;
+    --title-shadow: 3px 3px 10px rgba(255, 215, 0, 0.6), 0 1px 0 white;
+    --title-active-shadow: 0 0 15px #ffd700;
+    
+    --subtitle-color: #c6930a;
+    --subtitle-bg: rgba(255, 240, 200, 0.8);
+    --subtitle-border: rgba(255, 255, 255, 0.9);
+    --subtitle-shadow: 0 3px 10px #ffd700;
+    
+    --personal-block-bg: rgba(255, 250, 235, 0.95);
+    --personal-block-border: #ffd700;
+    --personal-block-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+    --personal-block-active-bg: #fff5d0;
+    --personal-block-active-border: #ffb347;
+    --personal-block-active-shadow: 0 8px 18px rgba(255, 200, 0, 0.25);
+    
+    --special-block-bg: linear-gradient(145deg, #fff5d0, #ffe5b0);
+    --special-block-border: #ffd700;
+    --special-block-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+    
+    --icon-shadow: #ffd700;
+    
+    --name-color: #8b6910;
+    --special-name-color: #b8860b;
+    --special-name-shadow: #ffd700;
+    
+    --game-section-bg: rgba(255, 240, 210, 0.7);
+    --game-section-border: #ffd700;
+    --game-title-color: #b8860b;
+    
+    --counter-color: #b8860b;
+    --counter-bg: rgba(255, 255, 255, 0.8);
+    --counter-border: #ffd700;
+    --counter-shadow: 0 5px 15px #ffd700;
+    
+    --flower-bg: #fff0c0;
+    --flower-border: #ffd700;
+    --flower-shadow: 0 15px 25px #ffb347;
+    
+    --hint-color: #b8860b;
+    --hint-bg: rgba(255, 255, 255, 0.7);
+    --hint-border: #ffd700;
+    
+    --progress-bg: rgba(255, 255, 255, 0.6);
+    --progress-border: #ffd700;
+    --progress-bar-gradient: linear-gradient(90deg, #ffd700, #ffb347);
+    
+    --modal-overlay: rgba(255, 215, 0, 0.6);
+    --modal-content-bg: rgba(255, 250, 240, 0.98);
+    --modal-content-border: #ffd700;
+    --modal-content-shadow: 0 25px 35px #ffb347;
+    --modal-message-color: #b8860b;
+    
+    --wish-line-bg: rgba(255, 255, 255, 0.7);
+    --wish-line-border: #ffd700;
+    
+    --modal-btn-bg: #ffd700;
+    --modal-btn-border: white;
+    --modal-btn-color: #8b6910;
+    --modal-btn-active-bg: #ffb347;
+    --modal-btn-active-shadow: 0 5px 12px #b8860b;
+    
+    --signature-color: #b8860b;
+    --signature-border: #ffd700;
+    --signature-active-color: #8b6910;
+    
+    --input-border: #ffd700;
+    --input-bg: rgba(255, 250, 240, 0.95);
+    --input-color: #8b6910;
+    
+    --slider-color: #b8860b;
+    --slider-accent: #ffd700;
+    --slider-thumb-bg: #ffd700;
+    --slider-thumb-border: white;
+    --slider-thumb-shadow: 0 2px 6px #ffb347;
+    --slider-track-bg: #fff0c0;
+    --slider-track-border: #ffd700;
+    
+    --about-dev-color: #b8860b;
+    --about-dev-border: #ffd700;
+    
+    --dev-links-bg: rgba(255, 250, 235, 0.6);
+    --dev-links-border: #ffd700;
+    --dev-links-link: #b8860b;
+    --dev-links-link-border: #ffd700;
+    
+    --thanks-color: #b8860b;
+    
+    /* Переменные для гадания на ромашке */
+    --daisy-btn-bg: #ffd700;
+    --daisy-btn-border: white;
+    --daisy-btn-color: #8b6910;
+    --daisy-btn-shadow: 0 10px 20px #ffb347;
+    --daisy-btn-active-bg: #ffb347;
+    
+    --daisy-container-bg: rgba(255, 240, 210, 0.7);
+    --daisy-container-border: #ffd700;
+    
+    --daisy-center-bg: radial-gradient(circle at 30% 30%, #ffd700, #ffb347 80%, #b8860b);
+    --daisy-center-shadow: 0 8px 18px rgba(255, 215, 0, 0.4), inset -5px -8px 10px #b8860b, inset 8px 8px 25px #fff0c0;
+    --daisy-center-border: #ffd700;
+    --daisy-center-color: #fff0c0;
+    --daisy-center-text-shadow: 2px 2px 0 #b8860b;
+    --daisy-center-dots: #ffd700;
+    
+    --daisy-petal-bg: linear-gradient(145deg, #fff5d0, #fff0c0 60%, #ffe5b0);
+    --daisy-petal-odd-bg: linear-gradient(145deg, #fff0c0, #ffe5b0 90%);
+    --daisy-petal-shadow: 0 10px 18px rgba(255, 215, 0, 0.3), inset -3px -5px 8px #ffe5b0, inset 4px 5px 15px white;
+    --daisy-petal-border: #ffd700;
+    
+    --daisy-glow-from: #ffd700;
+    --daisy-glow-to: #fff0c0;
+    
+    --daisy-fortune-bg: rgba(255, 250, 240, 0.9);
+    --daisy-fortune-border: #ffd700;
+    --daisy-fortune-color: #b8860b;
+    --daisy-fortune-shadow: 0 5px 20px #ffb347;
+    
+    --daisy-btn-text: #8b6910;
+    --daisy-spin-btn-bg: #ffd700;
+    
+    --daisy-cost-color: #b8860b;
+    --daisy-cost-bg: rgba(255, 255, 255, 0.5);
+    
+    /* Переменные для настроек */
+    --settings-section-bg: rgba(255, 250, 235, 0.5);
+    --settings-section-border: #ffd700;
+    --section-title-color: #b8860b;
+    
+    /* Переменные для кнопок тем */
+    --theme-btn-border: #ffd700;
+    --theme-btn-bg: rgba(255, 240, 200, 0.5);
+    --theme-btn-color: #8b6910;
+    --theme-btn-active-border: #ffd700;
+    --theme-btn-active-bg: #fff0c0;
+    --theme-btn-active-shadow: 0 0 15px #ffd700;
+    
+    /* Переменные для рулетки */
+    --wheel-btn-bg: #ffd700;
+    --wheel-container-bg: rgba(255, 240, 210, 0.7);
+    --wheel-container-border: #ffd700;
+    --wheel-sector-even: #fff0c0;
+    --wheel-sector-odd: #ffe5b0;
+    --wheel-sector-stroke: #ffd700;
+    --wheel-text-color: #b8860b;
+    --wheel-text-shadow: #ffd700;
+    --wheel-center-bg: #fff0c0;
+    --wheel-center-shadow: #ffd700;
+    --wheel-center-stroke: #b8860b;
+    --wheel-pointer-color: #ffd700;
+    --wheel-pointer-shadow: rgba(255, 215, 0, 0.5);
+    --wheel-spin-btn-bg: #ffd700;
+    --wheel-spin-btn-border: white;
+    --wheel-spin-btn-color: #8b6910;
+    --wheel-spin-btn-shadow: 0 8px 0 #b8860b, 0 12px 20px rgba(255, 215, 0, 0.4);
+    --wheel-spin-btn-active-shadow: 0 4px 0 #b8860b, 0 12px 20px rgba(255, 215, 0, 0.4);
+    
+    /* Кнопки игр */
+    --game-btn-border: #ffd700;
+    --game-btn-color: #8b6910;
+    --game-btn-shadow: 0 8px 15px #ffb347;
 }
 
 /* ==================== Тема "Космическая" (секретная) ==================== */
@@ -856,9 +1056,14 @@
     --wheel-btn-bg: #5a4a8a;
     --wheel-container-bg: rgba(30, 20, 60, 0.7);
     --wheel-container-border: #5a4a8a;
-    --wheel-shadow: 0 15px 30px rgba(0, 0, 0, 0.8),
-                    0 0 0 3px #5a4a8a inset,
-                    0 0 0 6px #2a1a4a;
+    --wheel-sector-even: #4a3a7a;
+    --wheel-sector-odd: #3a2a6a;
+    --wheel-sector-stroke: #b8a0ff;
+    --wheel-text-color: #f0e0ff;
+    --wheel-text-shadow: #b8a0ff;
+    --wheel-center-bg: #5a4a8a;
+    --wheel-center-shadow: #b8a0ff;
+    --wheel-center-stroke: #f0e0ff;
     --wheel-pointer-color: #b8a0ff;
     --wheel-pointer-shadow: rgba(0, 0, 0, 0.8);
     --wheel-spin-btn-bg: #5a4a8a;
@@ -1031,9 +1236,14 @@
     --wheel-btn-bg: #2a4a8a;
     --wheel-container-bg: rgba(15, 35, 65, 0.7);
     --wheel-container-border: #2a4a8a;
-    --wheel-shadow: 0 15px 30px rgba(0, 0, 0, 0.8),
-                    0 0 0 3px #2a4a8a inset,
-                    0 0 0 6px #0a1a4a;
+    --wheel-sector-even: #1a3a7a;
+    --wheel-sector-odd: #0a1a4a;
+    --wheel-sector-stroke: #8ab0ff;
+    --wheel-text-color: #d0e0ff;
+    --wheel-text-shadow: #8ab0ff;
+    --wheel-center-bg: #2a4a8a;
+    --wheel-center-shadow: #8ab0ff;
+    --wheel-center-stroke: #d0e0ff;
     --wheel-pointer-color: #8ab0ff;
     --wheel-pointer-shadow: rgba(0, 0, 0, 0.8);
     --wheel-spin-btn-bg: #2a4a8a;

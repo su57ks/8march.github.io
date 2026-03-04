@@ -457,7 +457,7 @@
         <div class="custom-modal-content">
             <div class="modal-flower">🎁💗🎁</div>
             <div class="modal-message">Надеюсь, вы меня не ненавидите)<br>Вот вам подарок - введите промокод<br><span style="font-size:1.3rem;">(Подсказка: это мемное число)</span></div>
-            <input type="text" id="promoCodeInput" class="promo-input" placeholder="Например 1488" maxlength="10" inputmode="numeric">
+            <input type="text" id="promoCodeInput" class="promo-input" placeholder="Например 2,71828" maxlength="10" inputmode="numeric">
             <div class="modal-btn promo-apply-btn" id="applyPromoCodeBtn">Активировать</div>
             <div class="modal-btn close-btn" onclick="closePromoModal()" style="margin-top:8px;">Закрыть</div>
         </div>
@@ -473,7 +473,7 @@
                 <div class="section-title">🌸 Лепестки</div>
                 <div class="slider-row">
                     <label for="petalCountSlider">Количество лепестков: <span id="petalCountValue">25</span></label>
-                    <input type="range" id="petalCountSlider" min="0" max="150" value="25" step="1">
+                    <input type="range" id="petalCountSlider" min="0" max="50" value="25" step="1">
                 </div>
             </div>
             
@@ -1421,12 +1421,12 @@
         const WHEEL_FLOWERS = [
             { emoji: '🌸', name: 'Сакура' },
             { emoji: '🌼', name: 'Ромашка' },
-            { emoji: '🌻', name: 'Подсолнух' },
+            { emoji: '🌷', name: 'Тюльпан' },
             { emoji: '🌺', name: 'Гибискус' },
             { emoji: '🌷', name: 'Тюльпан' },
             { emoji: '🌹', name: 'Роза' },
             { emoji: '🌸', name: 'Сакура' },
-            { emoji: '🌿', name: 'Веточка' }
+            { emoji: '🌹', name: 'Роза' }
         ];
         
         const wheelSectorCount = 8;

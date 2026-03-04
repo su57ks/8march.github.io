@@ -1650,3 +1650,16 @@ html {
         font-size: 1.1rem;
     }
 }
+/* Адаптивная кнопка выбора темы */
+.theme-selector-btn {
+    background: var(--modal-btn-bg) !important;
+    border: 3px solid var(--modal-btn-border) !important;
+    color: var(--modal-btn-color) !important;
+    box-shadow: 0 5px 0 var(--modal-btn-shadow), 0 8px 12px var(--modal-btn-active-shadow) !important;
+    transition: all 0.1s ease !important;
+}
+
+.theme-selector-btn:active {
+    transform: translateY(4px) !important;
+    box-shadow: 0 1px 0 var(--modal-btn-shadow), 0 8px 12px var(--modal-btn-active-shadow) !important;
+}

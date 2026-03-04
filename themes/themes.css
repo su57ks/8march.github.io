@@ -152,18 +152,18 @@
     --theme-btn-active-bg: #fff0f5;
     --theme-btn-active-shadow: 0 0 15px #ffb7c5;
     
-    /* Переменные для рулетки */
+    /* Переменные для рулетки - АДАПТИВНАЯ ОБВОДКА */
     --wheel-btn-bg: #ffe4b0;
     --wheel-container-bg: rgba(255, 240, 250, 0.7);
     --wheel-container-border: rgba(255, 255, 255, 0.8);
     --wheel-sector-even: #ffd9e6;
     --wheel-sector-odd: #ffe4f0;
-    --wheel-sector-stroke: #ffffff;
+    --wheel-sector-stroke: #ffb7c5;
     --wheel-text-color: #9f5f74;
     --wheel-text-shadow: #ffb7c5;
     --wheel-center-bg: #ffffff;
     --wheel-center-shadow: #ffb0c0;
-    --wheel-center-stroke: #ffb7c5;
+    --wheel-center-stroke: #ff8da1;
     --wheel-pointer-color: #ffa5bc;
     --wheel-pointer-shadow: rgba(255, 140, 170, 0.5);
     --wheel-spin-btn-bg: #ffe4b0;
@@ -332,18 +332,18 @@
     --theme-btn-active-bg: #f0f0f0;
     --theme-btn-active-shadow: 0 0 15px #cccccc;
     
-    /* Переменные для рулетки */
+    /* Переменные для рулетки - АДАПТИВНАЯ ОБВОДКА */
     --wheel-btn-bg: #ffe4b0;
     --wheel-container-bg: rgba(240, 240, 240, 0.7);
     --wheel-container-border: rgba(255, 255, 255, 0.8);
     --wheel-sector-even: #f0f0f0;
     --wheel-sector-odd: #e8e8e8;
-    --wheel-sector-stroke: #ffffff;
+    --wheel-sector-stroke: #aaaaaa;
     --wheel-text-color: #666666;
     --wheel-text-shadow: #cccccc;
     --wheel-center-bg: #ffffff;
     --wheel-center-shadow: #cccccc;
-    --wheel-center-stroke: #aaaaaa;
+    --wheel-center-stroke: #888888;
     --wheel-pointer-color: #cccccc;
     --wheel-pointer-shadow: rgba(200, 200, 200, 0.5);
     --wheel-spin-btn-bg: #ffe4b0;
@@ -512,18 +512,18 @@
     --theme-btn-active-bg: #f0e0fa;
     --theme-btn-active-shadow: 0 0 15px #ce93d8;
     
-    /* Переменные для рулетки */
+    /* Переменные для рулетки - АДАПТИВНАЯ ОБВОДКА */
     --wheel-btn-bg: #ffe4b0;
     --wheel-container-bg: rgba(240, 220, 250, 0.7);
     --wheel-container-border: rgba(255, 255, 255, 0.8);
     --wheel-sector-even: #f0d5fa;
     --wheel-sector-odd: #e8c5f0;
-    --wheel-sector-stroke: #ffffff;
+    --wheel-sector-stroke: #ce93d8;
     --wheel-text-color: #7b4b8f;
     --wheel-text-shadow: #d9b0e6;
     --wheel-center-bg: #ffffff;
     --wheel-center-shadow: #d9b0e6;
-    --wheel-center-stroke: #ce93d8;
+    --wheel-center-stroke: #b06bc0;
     --wheel-pointer-color: #ce93d8;
     --wheel-pointer-shadow: rgba(200, 150, 220, 0.5);
     --wheel-spin-btn-bg: #ffe4b0;
@@ -692,13 +692,13 @@
     --theme-btn-active-bg: #ffd5e5;
     --theme-btn-active-shadow: 0 0 15px #ff8aa1;
     
-    /* Переменные для рулетки */
+    /* Переменные для рулетки - АДАПТИВНАЯ ОБВОДКА */
     --wheel-btn-bg: #ffe4b0;
     --wheel-container-bg: rgba(255, 210, 230, 0.8);
     --wheel-container-border: rgba(255, 255, 255, 0.8);
     --wheel-sector-even: #ffd5e5;
     --wheel-sector-odd: #ffc5d5;
-    --wheel-sector-stroke: #ffffff;
+    --wheel-sector-stroke: #ff8aa1;
     --wheel-text-color: #b83858;
     --wheel-text-shadow: #ff8aa1;
     --wheel-center-bg: #ffffff;
@@ -872,7 +872,7 @@
     --theme-btn-active-bg: #fff0c0;
     --theme-btn-active-shadow: 0 0 15px #ffd700;
     
-    /* Переменные для рулетки */
+    /* Переменные для рулетки - АДАПТИВНАЯ ОБВОДКА */
     --wheel-btn-bg: #ffd700;
     --wheel-container-bg: rgba(255, 240, 210, 0.7);
     --wheel-container-border: #ffd700;
@@ -1052,7 +1052,7 @@
     --theme-btn-active-bg: #5a4a8a;
     --theme-btn-active-shadow: 0 0 15px #b8a0ff;
     
-    /* Переменные для рулетки */
+    /* Переменные для рулетки - АДАПТИВНАЯ ОБВОДКА */
     --wheel-btn-bg: #5a4a8a;
     --wheel-container-bg: rgba(30, 20, 60, 0.7);
     --wheel-container-border: #5a4a8a;
@@ -1232,7 +1232,7 @@
     --theme-btn-active-bg: #2a4a8a;
     --theme-btn-active-shadow: 0 0 15px #8ab0ff;
     
-    /* Переменные для рулетки */
+    /* Переменные для рулетки - АДАПТИВНАЯ ОБВОДКА */
     --wheel-btn-bg: #2a4a8a;
     --wheel-container-bg: rgba(15, 35, 65, 0.7);
     --wheel-container-border: #2a4a8a;
